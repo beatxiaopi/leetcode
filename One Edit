@@ -1,0 +1,38 @@
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        int leftBound=s.length(), rightBound=t.length();
+        int count=0, pLeft=0, pRight=0;
+        if (Math.abs(leftBound-rightBound)>1) return false;
+        if (s.equals(t)) return false;
+        if (leftBound<=1 && rightBound<=1) return true;
+        while (pLeft<leftBound && pRight<rightBound) {
+            if (count>1) return false;
+            if(s.charAt(pLeft)!=t.charAt(pRight)) {
+                if (leftBound==rightBound) {
+                    if(pLeft<(leftBound-1)&&pRight<(rightBound-1)
+                        &&s.charAt(pLeft+1)!=t.charAt(pRight+1)) {
+                    return false;
+                }
+                pLeft+=1;
+                pRight+=1;
+            }
+                else if ((pLeft<(leftBound-1) && 
+                    s.charAt(pLeft+1)==t.charAt(pRight))) {
+                    pLeft+=1;
+                }
+                else if ((pRight<(rightBound-1) &&
+                          s.charAt(pLeft)==t.charAt(pRight+1))) {
+                    pRight+=1;
+                }
+                    count+=1;
+                    continue;
+            }
+            pLeft+=1;
+            pRight+=1;
+            }
+        if (pLeft<leftBound || pRight<rightBound && count==0) {
+            return true;
+        }
+        return count==1;
+    }
+}
