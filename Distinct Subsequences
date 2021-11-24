@@ -1,0 +1,23 @@
+public int numDistinct(String s, String t) {
+        
+        int[][] dp = new int[s.length()+1][t.length()+1];
+        
+        // dp[i][j] means forming t[j:] using s[i:]
+        for (int i = 0; i < dp.length; ++i) {
+            dp[i][t.length()] = 1;
+        }
+        
+        for (int j = t.length()-1; j >= 0; --j) {
+            for (int i = s.length()-1; i >= 0; --i) {
+                if (s.charAt(i) == t.charAt(j)) {
+                    // We can choose to match s[i] with t[j],
+                    // or try to match s[i+1:] with t[j:].
+                    dp[i][j] = dp[i+1][j+1] + dp[i+1][j];
+                } else {
+                    // We can only match s[i+1:] with t[j:].
+                    dp[i][j] = dp[i+1][j];
+                }
+            }
+        }
+        return dp[0][0];
+    }
