@@ -37,11 +37,12 @@ class Solution {
                             dict.remove(newWord);
                         }
                     }
-                    ladderLength++;
-                    start=nextWords;
+                    wordChar[i]= originalChar;
                 }
             }
+            ladderLength++;
+            start=nextWords;
         }
-        return ladderLength;
+        return 0;
     } 
 }
