@@ -1,0 +1,22 @@
+class BSTIterator {
+    List<Integer> sorted=new ArrayList<>();
+    int index=-1;
+
+    public BSTIterator(TreeNode root) {
+        inorder(root);
+    }
+    private void inorder(TreeNode root) {
+        if (root==null) return;
+        this.inorder(root.left);
+        this.sorted.add(root.val);
+        this.inorder(root.right);
+    }
+    
+    public int next() {
+        return this.sorted.get(++this.index);
+    }
+    
+    public boolean hasNext() {
+        return this.index<this.sorted.size()-1;
+    }
+}
