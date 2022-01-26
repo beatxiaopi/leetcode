@@ -1,0 +1,20 @@
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> pathList = new ArrayList<>();
+        List <Integer> pathVal = new ArrayList<>();
+        recurTree(root, targetSum, pathVal, pathList);
+        return pathList;
+    }
+    private void recurTree(TreeNode node, int remainSum, List<Integer>pathVal, List<List<Integer>>pathList) {
+        if (node==null) return;
+        pathVal.add(node.val);
+        if (remainSum==node.val&&node.left==null&&node.right==null) {
+            pathList.add(new ArrayList<>(pathVal));
+        }
+        else {
+            recurTree(node.left, remainSum-node.val, pathVal, pathList);
+            recurTree(node.right, remainSum-node.val, pathVal, pathList);
+        }
+        pathVal.remove(pathVal.size()-1);
+    }
+}
