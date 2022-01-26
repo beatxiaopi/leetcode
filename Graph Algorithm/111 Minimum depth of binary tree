@@ -1,0 +1,10 @@
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root==null) return 0;
+        if(root.left==null &&root.right==null) return 1;
+        int minD=Integer.MAX_VALUE;
+        if(root.left!=null) minD=Math.min(minDepth(root.left), minD);
+        if(root.right!=null) minD=Math.min(minDepth(root.right), minD);
+        return minD+1;
+    }
+}
