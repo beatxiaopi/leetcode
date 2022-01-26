@@ -1,0 +1,17 @@
+class Solution {
+    int pathSumVal=0;
+    public int sumNumbers(TreeNode root) {
+        pathSum(root, 0);
+        return pathSumVal;
+    }
+    private void pathSum(TreeNode node, int currNum) {
+        if(node!=null) {
+            currNum=currNum*10+node.val;
+            if(node.left==null &&node.right==null) {
+                pathSumVal+=currNum;
+            }
+            pathSum(node.left, currNum);
+            pathSum(node.right, currNum);
+        }
+    }
+}
