@@ -1,0 +1,46 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result= new ArrayList<>();
+        int n =words.length, i=0;
+        int wordLength;
+        while(i<n) {
+            int j=i+1;
+            wordLength=words[i].length();
+            while(j<n && (wordLength+words[j].length()+j-i)<=maxWidth) {
+                wordLength+=words[j].length();
+                j++;
+            }
+            if((j-i)==1 || j>=n) {
+                result.add(leftJustified(words, maxWidth, wordLength, i, j));
+            }
+            else result.add(middleJustified(words, maxWidth, wordLength, i, j));
+            i=j;
+        }
+        return result;
+    }
+    private String leftJustified(String[]words, int maxWidth, int wordLength, int i, int j) {
+        StringBuilder sb =new StringBuilder();
+        int spaceNum;
+        spaceNum=maxWidth-wordLength-(j-i);
+        while(i<j) {
+            sb.append(words[i]);
+            if(sb.length()<maxWidth) sb.append(" ");
+            i++;
+        }
+        if (spaceNum>0) sb.append(" ".repeat(spaceNum));
+        return sb.toString();
+    }
+    
+    private String middleJustified(String[]words, int maxWidth, int wordLength, int i, int j) {
+        StringBuilder sb =new StringBuilder();
+        int spaceNum=(maxWidth-wordLength)/(j-i-1);
+        int extraSpace=(maxWidth-wordLength)%(j-i-1);
+        for(int k=i; k<j-1; k++) {
+            sb.append(words[k]);
+            sb.append(" ".repeat(spaceNum));
+            if(extraSpace-->0) sb.append(" ");
+        }
+        sb.append(words[j-1]);
+        return sb.toString();
+    }
+}
