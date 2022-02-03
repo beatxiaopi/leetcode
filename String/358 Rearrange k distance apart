@@ -1,0 +1,64 @@
+class Solution {
+    public String rearrangeString(String s, int k) {
+        if(k==0) return s;
+        Map<Character, Integer> freq = new HashMap<>();
+        for(Character ch : s.toCharArray()) {
+            freq.put(ch, freq.getOrDefault(ch, 0)+1);
+        }
+        PriorityQueue<Character> maxHeap = new PriorityQueue<>((a,b)->freq.get(b)-freq.get(a));
+        maxHeap.addAll(freq.keySet());
+        StringBuilder sb = new StringBuilder();
+        Queue<Character> temp= new LinkedList<>();
+        while(!maxHeap.isEmpty()) {
+            char ch=maxHeap.poll();
+            sb.append(ch);
+            temp.add(ch);
+            freq.put(ch, freq.get(ch)-1);
+            if(temp.size()>=k) {
+                char c=temp.poll();
+                if (freq.get(c)>0) {
+                    maxHeap.add(c);
+                }
+            }
+        }
+        return sb.length()==s.length()? sb.toString():"";
+    }
+}
+
+
+//reference code: https://leetcode.com/problems/rearrange-string-k-distance-apart/discuss/1498113/Java-%2B-PriorityQueue-%2B-Queue-%2B-Easy-to-understand
+class Solution {
+    public String rearrangeString(String s, int k) {
+        
+        if(k == 0) return s;
+        
+        Map<Character, Integer> map = new HashMap<>();
+        
+        for(Character c : s.toCharArray())
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        
+        PriorityQueue<Character> heap = new PriorityQueue<>((c1, c2) -> map.get(c2).compareTo(map.get(c1)));        
+        heap.addAll(map.keySet());
+        
+        StringBuilder sb = new StringBuilder();
+        Queue<Character> queue = new LinkedList<>();
+        
+        while(!heap.isEmpty()){            
+            char c = heap.poll();
+            queue.add(c);
+            map.put(c, map.get(c) - 1);
+            sb.append(c);
+
+			// Characters are added back in the heap in the order they were removed
+			// Whenever all the instances of a particular char is exhausted, then the heap size is reduced as it is not added back in the heap
+            if (queue.size() >= k) {
+                char ch = queue.poll();
+                if(map.get(ch) > 0)
+                    heap.add(ch);                
+            }            
+        }        
+        return sb.length() == s.length() ? sb.toString() : "";
+    }
+}
+//
+
