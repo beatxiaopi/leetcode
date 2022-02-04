@@ -1,0 +1,17 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length()!=t.length()) return false;
+        Map<Character, Integer> map= new HashMap<>();
+        for(char ch:s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0)+1);
+        }
+        int p=0, n=t.length();
+        while(p<n) {
+            if (map.containsKey(t.charAt(p))) {
+                map.put(t.charAt(p), map.get(t.charAt(p))-1);
+            }
+            p++;
+        }
+        return Collections.max(map.values())==0;
+    }
+}
