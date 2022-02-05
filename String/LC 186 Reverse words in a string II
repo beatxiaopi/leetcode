@@ -1,0 +1,25 @@
+class Solution {
+    public void reverseWords(char[] s) {
+        reverseChar(s, 0, s.length-1);
+        int start=0, end=0;
+        while(start<s.length) {
+            end=start;
+            while((end+1)<s.length && s[end+1]!=' ') {
+                end++;
+            }
+            reverseChar(s, start, end);
+            start=end+2;
+        }
+    }
+    
+    private void reverseChar(char[] str, int start, int end) {
+        char temp;
+        while(start<end) {
+            temp=str[end];
+            str[end]=str[start];
+            str[start]=temp;
+            start++;
+            end--;
+        }
+    }
+}
