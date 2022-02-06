@@ -1,0 +1,61 @@
+//passed 37/38 leetcode tests, shows time limit exceed.
+class Solution {
+    public void rotate(int[] nums, int k) {
+        for(int j=1; j<=k; j++) {
+            rotateOnce(nums);
+        }
+    }
+    private void rotateOnce(int[] arr) {
+        int swap=0, n=arr.length;
+        for (int i=0; i<n-1; i++) {
+            swap=arr[i];
+            arr[i]=arr[n-1];
+            arr[n-1]=swap;
+        }
+    }
+}
+// accepted method2
+class Solution {
+    public void rotate(int[] nums, int k) {
+        k=k%nums.length;
+        reverse(nums, 0, nums.length-1);
+        reverse(nums, 0, k-1);
+        reverse(nums, k, nums.length-1);
+    }
+    private void reverse(int[] arr, int start, int end) {
+        int swap=0;
+        while (start<end) {
+            swap=arr[start];
+            arr[start]=arr[end];
+            arr[end]=swap;
+            start++;
+            end--;
+        }
+    }
+}
+
+
+//accepted method 3
+class Solution {
+    public void rotate(int[] nums, int k) {
+        if (nums.length<=1) return;
+        int n=nums.length;
+        k%=n;
+        int gcd= findGcd(n, k);
+        int position, count;
+        for(int i=0; i<gcd; i++) {
+            position=i;
+            count=n/gcd-1;
+            for(int j=0; j<count; j++) {
+                position = (position + k) % nums.length;
+                nums[i] ^= nums[position];
+                nums[position] ^= nums[i];
+                nums[i] ^= nums[position];
+            }
+        }
+
+    }
+        private int findGcd(int a, int b) {
+            return (a==0 || b==0)? a+b : findGcd(b, a%b);
+        }
+}
