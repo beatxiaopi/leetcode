@@ -1,0 +1,31 @@
+class Solution {
+    List<String> results= new LinkedList<>();
+    public List<String> addOperators(String num, long target) {
+        dfs(num, target, 0, "", 0, 0);
+        return results;
+    }
+    private void dfs(String num, long target, int currPos, 
+                     String preStr, long preVal, long lastVal) {
+        if(currPos==num.length()) {
+            if (preVal==target) results.add(preStr);
+            return;
+        }
+        
+        for(int i=currPos+1; i<=num.length(); i++) {
+            String currStr=num.substring(currPos, i);
+            if (currStr.length()>1 && num.charAt(currPos)=='0') continue;
+            long currVal= Long.valueOf(num.substring(currPos, i));
+
+            if (currPos==0) {
+                dfs(num, target, i, num.substring(currPos, i), currVal, currVal);
+            }
+            else {
+            dfs(num, target, i, preStr+"+"+num.substring(currPos, i), preVal+currVal, currVal);
+            dfs(num, target, i, preStr+"-"+num.substring(currPos, i), preVal-currVal, -currVal);
+            dfs(num, target, i, preStr+"*"+num.substring(currPos, i), 
+                preVal-lastVal+lastVal*currVal, lastVal*currVal);
+            }
+
+        }
+    } 
+}
