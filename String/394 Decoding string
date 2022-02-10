@@ -1,0 +1,38 @@
+class Solution {
+    public String decodeString(String s) {
+        int n=s.length();
+        StringBuilder sb = new StringBuilder();
+        String result = new String();
+        Stack<Integer> nums= new Stack<>();
+        Stack<String> sub = new Stack<>();
+        int st=0, ed=0, temp=0;
+        String curr="";
+        for(; st<n; st++) {
+            char c=s.charAt(st);
+            if (c>='0' &&c<='9') {
+                ed=st;
+                while(ed<n && Character.isDigit(s.charAt(ed))) {
+                    ed++;
+                }
+                temp=Integer.valueOf(s.substring(st,ed));
+                nums.push(temp);
+                temp=0;
+                sub.push(curr);
+                curr="";
+                st=ed;
+            }
+            else if (c==']') {
+                int k=nums.pop();
+                String temp1=curr;
+                for(int i=0; i<k-1; i++) {
+                    curr+=temp1;
+                }
+                curr=sub.pop()+curr;
+            }
+            else {
+                curr+=Character.toString(c);
+            }
+        }
+        return curr;
+    }
+}
