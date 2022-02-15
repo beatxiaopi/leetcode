@@ -1,0 +1,35 @@
+class Solution {
+    public String simplifyPath(String path) {
+        path+="/";
+        path=path.replaceAll("//+", "/");
+        StringBuilder sb = new StringBuilder();
+        LinkedList<String> stack = new LinkedList<>();
+        String temp ="";
+        for(int i=0; i<path.length(); i++) {
+            char ch = path.charAt(i);
+            if(ch!='/') {
+                temp+=Character.toString(ch);
+            }
+            else if(ch=='/' && temp!="") {
+                if(temp.equals(".")) {
+                    temp="";
+                    continue;
+                }
+                else if (temp.equals("..")) {
+                    if(!stack.isEmpty()) {
+                        stack.pollLast();
+                    }
+                    temp="";
+                }
+                else {
+                    stack.add(temp);
+                    temp="";
+                }
+            }
+        }
+        for (String s:stack) {
+            sb.append("/").append(s);
+        }
+        return stack.isEmpty()? "/": sb.toString();
+    }
+}
