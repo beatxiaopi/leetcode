@@ -1,0 +1,16 @@
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        String [] sq1= version1.split("\\.");
+        String [] sq2= version2.split("\\.");
+        int i1=0, i2=0, i=0, j=0;
+        while(i<sq1.length || j<sq2.length) {
+            i1= i<sq1.length? Integer.parseInt(sq1[i]):0;
+            i2= j<sq2.length? Integer.parseInt(sq2[j]):0;
+            if (i1>i2) return 1;
+            if (i1<i2) return -1;
+            i++;
+            j++;
+        }
+        return 0;
+    }
+}
