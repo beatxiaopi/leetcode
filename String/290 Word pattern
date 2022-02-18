@@ -1,0 +1,25 @@
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        String [] div = s.split(" ");
+        int n= pattern.length();
+        Map<Character, String> map = new HashMap<>();
+        Map<String, Character> revMap = new HashMap<>();
+        if (div.length!=n) return false;
+        for(int i=0; i<n; i++) {
+            char c = pattern.charAt(i);
+            if(!map.containsKey(c)) {
+                if (revMap.containsKey(div[i])) {
+                    return false;
+                } 
+                else {
+                    map.put(c, div[i]);
+                    revMap.put(div[i], c);
+                }
+            }
+            else {
+                if(!map.get(c).equals(div[i])) return false;
+            }
+        }
+        return true;
+    }
+}
