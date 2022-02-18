@@ -1,0 +1,32 @@
+class Solution {
+    Map<Character, String> map = new HashMap<>();
+    Map<String, Character> revMap = new HashMap<>();
+    public boolean wordPatternMatch(String pattern, String s) {
+        return dfs(0, 0, pattern, s);
+
+    }
+    private boolean dfs(int x, int y, String p, String s) {
+        if(x==p.length() && y==s.length()) return true;
+        if(x==p.length() || y==s.length()) return false;
+        char c=p.charAt(x);
+        
+        if(map.containsKey(c)) {
+            String t=map.get(c);
+            if(y+t.length()>s.length()) return false;
+            if(!t.equals(s.substring(y, y+t.length()))) return false;
+            return dfs(x+1, y+t.length(), p, s);
+        }
+        else {
+            for(int i=y; i<s.length(); i++) {
+                String tt=s.substring(y, i+1);
+                if(revMap.containsKey(tt)) continue;
+                map.put(c, tt);
+                revMap.put(tt, c);
+                if(dfs(x+1, y+tt.length(), p, s)) return true;
+                map.remove(c, tt);
+                revMap.remove(tt, c);
+            }
+        }
+        return false;
+    }
+}
