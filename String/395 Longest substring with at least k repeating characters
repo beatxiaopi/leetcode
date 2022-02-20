@@ -1,0 +1,23 @@
+class Solution {
+    public int longestSubstring(String s, int k) {
+        Map<Character, Integer> map = new HashMap<>();
+        for(char c:s.toCharArray()) {
+            map.put(c, map.getOrDefault(c,0)+1);
+        }
+        int flag=1;
+        if(Collections.min(map.values())<k) flag=0;
+        if(flag==1) return s.length();
+        int ret=0;
+        for(int i=0; i<s.length(); i++) {
+            char h=s.charAt(i);
+            if(map.get(h)<k) continue;
+            int j=i;
+            while(j<s.length() && map.get(s.charAt(j))>=k) {
+                j++;
+            }
+            ret=Math.max(ret, longestSubstring(s.substring(i,j), k));
+            i=j;
+        }
+        return ret;
+    } 
+}
