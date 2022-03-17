@@ -1,0 +1,52 @@
+class Solution {
+    class TrieNode {
+        TrieNode[] next;
+        String word;
+        public TrieNode() {
+            this.next= new TrieNode[26];
+        }
+    }
+    
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> result = new ArrayList<>();
+        TrieNode root = new TrieNode();
+        boolean [][] visited = new boolean[board.length][board[0].length];
+        for(String str: words) {
+            TrieNode curr= root;
+            for(char ch: str.toCharArray()) {
+                if(curr.next[ch-'a']==null) {
+                    curr.next[ch-'a']=new TrieNode ();
+                }
+                curr=curr.next[ch-'a'];
+            }
+            curr.word=str;
+        }
+        for(int i=0; i<board.length; i++) {
+            for(int j=0; j<board[0].length; j++) {
+                if(root.next[board[i][j]-'a']!=null) {
+                    dfs(root, board, visited, result, i, j);
+                }
+            }
+        }
+        return result;
+    }
+    private void dfs(TrieNode root, char[][] board, boolean [][] visited, 
+                     List<String> result, int i, int j) {
+        if(i<0 || i>=board.length || j<0 || j>=board[0].length 
+           || visited[i][j] || root.next[board[i][j]-'a']==null) return;
+        visited[i][j]=true;
+        char ch=board[i][j];
+        TrieNode curr=root;
+        curr=curr.next[ch-'a'];
+        if(curr.word!=null) {
+            result.add(curr.word);
+            curr.word=null;
+        }
+        dfs(curr, board, visited, result, i+1, j);
+        dfs(curr, board, visited, result, i-1, j);
+        dfs(curr, board, visited, result, i, j+1);
+        dfs(curr, board, visited, result, i, j-1);
+        visited[i][j]=false;
+        return;
+    }
+}
