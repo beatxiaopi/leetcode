@@ -1,0 +1,22 @@
+class Solution {
+    public boolean isAdditiveNumber(String num) {
+        if(num.length()<3) return false;
+        for(int i=1; i<=num.length()/2; i++) {
+            if(num.charAt(0)=='0' && i>1) return false;
+            Long n1= Long.valueOf(num.substring(0,i));
+            for(int j=1; i+j<num.length(); j++) {
+                if(num.charAt(i)=='0' && j>1) break;
+                Long n2= Long.valueOf(num.substring(i, i+j));
+                if (dfs(n1, n2, i+j, num)) return true;
+            }
+        }
+        return false;
+    }
+    private boolean dfs(Long n1, Long n2, int start, String num) {
+        if(start==num.length()) return true;
+        n2=n1+n2;
+        n1=n2-n1;
+        String str=n2.toString();
+        return num.startsWith(str, start) && dfs(n1, n2, start+str.length(), num);
+    }
+}
