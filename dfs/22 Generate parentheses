@@ -1,0 +1,22 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        dfs(result, 0, 0, 2*n, sb);
+        return result;
+    }
+    private void dfs(List<String> result, int left, int right, int maxLen, StringBuilder sb) {
+        if (sb.length() == maxLen) {
+            result.add(sb.toString());
+            return;
+        }
+        if (left < maxLen / 2) {
+            dfs(result, left+1, right, maxLen, sb.append('('));
+            sb.deleteCharAt(sb.length()-1);
+        }
+        if (right < left) {
+            dfs(result, left, right+1, maxLen, sb.append(')'));
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
+}
