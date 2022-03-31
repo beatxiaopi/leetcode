@@ -1,0 +1,28 @@
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> ret = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        dfs(s, ret, sb, 0, 0); 
+        return ret;
+    }
+    
+    private void dfs(String s, List<String> ret, StringBuilder sb, int i, int count) {
+        if(i == s.length() && count == 4) {
+            ret.add(sb.toString());
+        }
+        else if(count == 4) return;  
+        for(int p = i; p < s.length(); p++) {
+            String str = s.substring(i, p+1);
+            int seg = Integer.parseInt(str);
+            if(str.length() > 1 && str.charAt(0) =='0') return;
+            if(seg > 255) return;
+            if(seg <= 255 && seg >= 0) {
+                StringBuilder prev = new StringBuilder(sb);
+                sb.append(str);
+                if(count<3) sb.append(".");
+                dfs(s, ret, sb, p+1, count+1);
+                sb = prev;
+            }
+        }
+    }
+}
