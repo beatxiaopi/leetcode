@@ -1,0 +1,27 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        if(digits.length() == 0) return new ArrayList<>();
+        Map<Character, String []> map = Map.of('2', new String [] {"a", "b", "c"},
+                                              '3', new String [] {"d", "e", "f"},
+                                              '4', new String [] {"g", "h", "i"},
+                                              '5', new String [] {"j", "k", "l"},
+                                              '6', new String [] {"m", "n", "o"},
+                                              '7', new String [] {"p", "q", "r", "s"},
+                                              '8', new String [] {"t", "u", "v"},
+                                              '9', new String [] {"w", "x", "y", "z"});
+        List<String> ret = new ArrayList<>();
+        dfs(map, digits, ret, "", 0);
+        return ret;
+    }
+    private void dfs(Map<Character, String []> map, String digits, 
+                     List<String> ret, String curr, int idx) {
+        if(idx==digits.length()) {
+            ret.add(curr);
+            return;
+        }
+        String [] temp = map.get(digits.charAt(idx));
+        for(int i=0; i<temp.length; i++) {
+            dfs(map, digits, ret, curr+temp[i], idx+1);
+        }
+    }
+}
