@@ -1,0 +1,20 @@
+class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> ret = new ArrayList<> ();
+        dfs(n, k, ret, 1, 0, new ArrayList<>());
+        return ret;
+    }
+    private void dfs(int n, int k, List<List<Integer>> ret, 
+                     int curr, int ptr, List<Integer> temp) {
+        if (ptr == k) {
+            ret.add(new ArrayList<> (temp));
+        }
+        for (int i = curr; i <= n; i++) {
+            if (ptr < k) {
+                temp.add(i);
+                dfs(n, k, ret, i+1, ptr+1, temp);
+                temp.remove(temp.size()-1);
+            }
+        }
+    }
+}
