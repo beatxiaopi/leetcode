@@ -1,0 +1,45 @@
+class Solution {
+    class TrieNode {
+        TrieNode [] next = new TrieNode[26];
+        boolean isWord;
+        TrieNode () {
+            for (int i = 0; i < 26; i++) {
+                next[i] = null;
+                isWord = false;
+            }
+        }
+    }
+    public boolean wordBreak(String s, List<String> wordDict) {
+        TrieNode root = new TrieNode();
+        for (String str : wordDict) {
+            TrieNode p = root;
+            for (char ch : str.toCharArray()) {
+                if (p.next[ch - 'a'] == null) {
+                    p.next[ch - 'a'] = new TrieNode();
+                }
+                p = p.next[ch - 'a'];
+            }
+            p.isWord = true;
+        }
+        boolean [] memo = new boolean[s.length()];
+        for (int i = 0; i < memo.length; i++) 
+            memo[i] = true;
+        return dfs(s, root, memo, 0);
+    }
+    private boolean dfs(String s, TrieNode root, boolean [] memo, int curr) {
+        if (curr == s.length()) return true;
+        if (!memo[curr]) return false;
+        TrieNode p = root;
+        for (int i = curr; i < s.length(); i++) {
+            if (p.next[s.charAt(i) - 'a'] != null) {
+                p = p.next[s.charAt(i) - 'a'];
+                if (p.isWord && dfs(s, root, memo, i+1))
+                    return true;
+            }
+            else break;
+        }
+        memo[curr] = false;
+        return false;
+    }
+}
+
