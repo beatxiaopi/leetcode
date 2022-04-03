@@ -1,0 +1,56 @@
+class Solution {
+    class TrieNode {
+        TrieNode [] next = new TrieNode[26];
+        boolean isWord;
+        TrieNode () {
+            for (int i = 0; i < 26; i++) {
+                next[i] = null;
+                isWord = false;
+            }
+        }
+    };
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        TrieNode root = new TrieNode();
+        List<String> ret = new ArrayList<>();
+        Arrays.sort(words, (a, b)->Integer.compare(a.length(), b.length()));
+        
+        for (String str : words) {
+            TrieNode p = root;
+            if (!str.equals("") && check(str, root)) {
+                ret.add(str);
+            }
+            for (char ch : str.toCharArray()) {
+                if (p.next[ch-'a'] == null) {
+                    p.next[ch-'a'] = new TrieNode();
+                }
+                p = p.next[ch-'a'];
+            }
+            p.isWord = true;
+        }
+        return ret;
+    }
+    private boolean check(String str, TrieNode root) {
+        boolean [] memo = new boolean[30];
+        Arrays.fill(memo, Boolean.TRUE);
+        return dfs(str, root, 0, memo);
+    }
+    
+    private boolean dfs(String word, TrieNode root, int curr, boolean [] memo) {
+        if (curr == word.length()) {
+            return true;
+        }
+        if (!memo[curr]) return false;
+        TrieNode p = root;
+        for (int i = curr; i < word.length(); i++) {
+            if (p.next[word.charAt(i)-'a'] != null) {
+                p = p.next[word.charAt(i) -'a'];
+                if (p.isWord && dfs(word, root, i+1, memo)) {
+                    return true;
+                }
+            }
+            else break;
+        }
+        memo[curr] = false;
+        return false;
+    }
+}
