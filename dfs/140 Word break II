@@ -1,0 +1,63 @@
+class Solution {
+    class TrieNode {
+        TrieNode [] next = new TrieNode[26];
+        boolean isWord;
+        TrieNode () {
+            for (int i = 0; i < 26; i++) {
+                next[i] = null;
+                isWord = false;
+            }
+        }
+    }
+    
+    public List<String> wordBreak(String s, List<String> wordDict) {
+        TrieNode root = new TrieNode ();
+        List<String> ret = new ArrayList<> ();
+        List<String> temp = new ArrayList<> ();
+        for (String str : wordDict) {
+            TrieNode p = root;
+            for (char ch : str.toCharArray()) {
+                if (p.next[ch-'a'] == null) {
+                    p.next[ch-'a'] = new TrieNode();
+                }
+                p = p.next[ch-'a'];
+            }
+            p.isWord = true;
+        }
+        boolean [] memo = new boolean[s.length()];
+        for (int i = 0; i < memo.length; i++)
+            memo[i] = true;
+        dfs(s, root, ret, memo, 0, temp);
+        return ret;
+    }
+    
+    private boolean dfs(String s, TrieNode root, List<String> ret, boolean [] memo, 
+                        int curr, List<String> temp) {
+        
+        if (curr == s.length()) {
+            String ans = "";
+            for (String str : temp) {
+                ans += str + " ";
+            }
+            ret.add(ans.substring(0, ans.length()-1));
+            return true;
+        }
+        if (!memo[curr]) return false;
+        TrieNode p = root;
+        boolean flag = false;
+        for (int i = curr; i < s.length(); i++) {
+            if (p.next[s.charAt(i)-'a'] != null) {
+                p = p.next[s.charAt(i)-'a'];
+                if (p.isWord) {
+                    temp.add(s.substring(curr, i+1));
+                    if (dfs(s, root, ret, memo, i+1, temp))
+                        flag = true;
+                    temp.remove(temp.size()-1);
+                }
+            }
+            else break;
+        }
+        if (!flag) memo[curr] = false;
+        return flag;
+    }
+}
