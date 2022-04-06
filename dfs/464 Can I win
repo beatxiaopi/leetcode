@@ -1,0 +1,25 @@
+class Solution {
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        if (desiredTotal <= 0) return true;
+        if ((maxChoosableInteger + 1) * maxChoosableInteger / 2 < desiredTotal) return false;
+        return dfs(new int [maxChoosableInteger], desiredTotal, new HashMap<>());
+    }
+    
+    private boolean dfs(int [] taken, int target, Map<String, Boolean> map) {
+        String curr = Arrays.toString(taken);
+        if (map.containsKey(curr)) return map.get(curr);
+        for (int i = 0; i < taken.length; i++) {
+            if (taken[i] == 0) {
+                taken[i] = 1;
+                if (target <= i+1 || !dfs(taken, target - (i+1), map)) {
+                    map.put(curr, true);
+                    taken[i] = 0;
+                    return true;
+                }
+                taken[i] = 0;
+            }
+        }
+        map.put(curr, false);
+        return false;
+    }
+}
