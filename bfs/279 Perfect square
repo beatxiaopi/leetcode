@@ -1,0 +1,25 @@
+class Solution {
+    public int numSquares(int n) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 1; i*i <= n; i++) {
+            set.add(i*i);
+        }
+        int count =1;
+        for (; count <= n; count++) {
+            if (divide(set, count, n)) {
+                return count;
+            }
+        }
+        return count;
+    }
+    
+    private boolean divide(Set<Integer> set, int count, int n) {
+        if (count == 1) return set.contains(n);
+        for (int num : set) {
+            if (divide(set, count -1, n - num)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
