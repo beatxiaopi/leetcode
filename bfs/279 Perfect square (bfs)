@@ -1,0 +1,30 @@
+class Solution {
+    public int numSquares(int n) {
+        List<Integer> sq = new ArrayList<>();
+        for (int i = 1; i*i <=n; i++) {
+            sq.add(i*i);
+        }
+        Set<Integer> q = new HashSet<>();
+        q.add(n);
+        int level =0;
+        while (!q.isEmpty()) {
+            Set<Integer> nq = new HashSet<>();
+            level += 1;
+            for (int remain : q) {
+                for (int minus : sq) {
+                    if (remain == minus) {
+                        return level;
+                    }
+                    else if (remain < minus) {
+                        break;
+                    }
+                    else {
+                        nq.add(remain-minus);
+                    }
+                }
+            }
+            q = nq;
+        }
+    return level;
+    }
+}
