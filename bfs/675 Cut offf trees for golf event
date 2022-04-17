@@ -1,0 +1,56 @@
+class Solution {
+    public int cutOffTree(List<List<Integer>> forest) {
+        int m = forest.size();
+        int n = forest.get(0).size();
+        Map<Integer, int []> tm = new TreeMap<>();
+        int res =0;
+        for (int i = 0; i < m; i++) {
+            for (int j =0; j < n; j++) {
+                if (forest.get(i).get(j) > 1) {
+                    tm.put(forest.get(i).get(j), new int [] {i,j});
+                }
+            }
+        }
+        int [] curr = {0, 0};
+        for (int [] next : tm.values()) {
+            int step = bfs(curr, next, forest);
+            if (step == -1) return -1;
+            res += step;
+            curr[0] = next[0];
+            curr[1] = next[1];
+        }
+        return res;
+    }
+    private int bfs(int [] curr, int [] next, List<List<Integer>> forest) {
+        int m = forest.size();
+        int n = forest.get(0).size();
+        boolean [][] visited = new boolean [m][n];
+        for (int i =0; i < m; i++) 
+            for (int j=0; j < n; j++) 
+                visited[i][j] = false;
+        if (Arrays.equals(curr, next)) return 0;
+        Deque <int []> q = new ArrayDeque <>();
+        q.add(curr);
+        visited[curr[0]][curr[1]] = true;
+        int dis =0;
+        int [][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        while (!q.isEmpty()) {
+            int len = q.size();
+            for (int i = 0; i < len; i++) {
+                int [] start = q.poll();
+                for (int k = 0; k < 4; k++) {
+                    int x = start[0] + dirs[k][0];
+                    int y = start[1] + dirs[k][1];
+                    if (x < 0 || x >= m || y < 0 || y >=n) continue;
+                    if (forest.get(x).get(y) == 0) continue;
+                    if (visited[x][y]) continue;
+                    if (x == next[0] && y == next[1]) return dis+1;
+                    q.add(new int [] {x, y});
+                    visited[x][y] = true;
+                }
+            }
+            dis += 1;
+        }
+        return -1;
+    }
+}
