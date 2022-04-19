@@ -45,3 +45,7 @@ class Solution {
         return sb.toString();
     }
 }
+
+
+// ref: https://leetcode.com/problems/push-dominoes/discuss/1562258/Simple-java-soltuion-using-bfs
+// ref: https://github.com/wisdompeak/LeetCode/blob/master/BFS/838.Push-Dominoes/838.Push-Dominoes.cpp
