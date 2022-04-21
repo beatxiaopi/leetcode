@@ -1,0 +1,38 @@
+//ref: https://leetcode.com/problems/escape-a-large-maze/discuss/282849/Python-BFS-and-DFS-The-whole-problem-is-broken
+class Solution {
+    public boolean isEscapePossible(int[][] blocked, int[] source, int[] target) {
+        int n = blocked.length;
+        Set<String> blocks = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            blocks.add(blocked[i][0] + "#" + blocked[i][1]);
+        }
+        return bfs(blocks, source, target) && bfs(blocks, target, source);
+    }
+    
+    private boolean bfs(Set<String> blocks, int [] s, int [] t) {
+        Queue<int []> q = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        q.add(new int [] {s[0], s[1]});
+        visited.add(s[0] + "#" + s[1]);
+        int [][] dirs = new int [][] {{1,0}, {-1,0}, {0,1}, {0,-1}};
+        
+        while (!q.isEmpty()) {
+            int [] curr = q.poll();
+            for (int k = 0; k < 4; k++) {
+                int x = curr[0] + dirs[k][0];
+                int y = curr[1] + dirs[k][1];
+                if (x < 0 || x >= 1e6 || y < 0 || y >= 1e6) {
+                    continue;
+                }
+                if (visited.contains(x + "#" + y) || blocks.contains(x + "#" + y)) {
+                    continue;
+                }
+                if (x == t[0] && y == t[1]) return true;
+                q.add(new int [] {x, y});
+                visited.add(x + "#" + y);
+                if (visited.size() >= 20000) return true;
+            }
+        }
+        return false;
+    }
+}
