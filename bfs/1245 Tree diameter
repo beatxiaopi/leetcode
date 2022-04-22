@@ -1,0 +1,29 @@
+class Solution {
+    int diameter=0;
+    public int treeDiameter(int[][] edges) {
+        List<Integer> [] tree = new List[edges.length+1];
+        for (int i = 0; i < tree.length; i++) {
+            tree[i] = new ArrayList<>();
+        }
+        for (int [] edge : edges) {
+            tree[edge[0]].add(edge[1]);
+        }
+        dfs(tree, 0);
+        return diameter;
+    }
+    private int dfs(List<Integer> [] tree, int start) {
+        int path1 = 0, path2 =0;
+        for (Integer next : tree[start]) {
+            int distance = dfs(tree, next);
+            if (distance >= path1) {
+                path2 = path1;
+                path1 = distance;
+            }
+            else if (distance > path2) {
+                path2 = distance;
+            }
+            diameter = Math.max(diameter, path1 + path2);
+        }
+        return path1+1;
+    }
+}
