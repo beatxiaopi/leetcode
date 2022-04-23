@@ -1,0 +1,32 @@
+class Solution {
+    public int maxCandies(int[] status, int[] candies, int[][] keys, int[][] containedBoxes, int[] initialBoxes) {
+        Queue<Integer> q = new LinkedList<>();
+        Set<Integer> k = new HashSet<>();
+        int res = 0;
+        boolean flag = true;
+        for (int curr : initialBoxes) {
+            q.add(curr);
+        }
+        while (!q.isEmpty() && flag) {
+            flag = false;
+            int len = q.size();
+            while (len-- > 0) {
+                int curr = q.poll();
+                if (status[curr] == 0 && !k.contains(curr)) {
+                    q.add(curr);
+                }
+                else {
+                    flag = true;
+                    res += candies[curr];
+                    for (int nb : containedBoxes[curr]) {
+                        q.add(nb);
+                    }
+                    for (int key : keys[curr]) {
+                        k.add(key);
+                    }
+                } 
+            }
+        }
+        return res;
+    }
+}
