@@ -1,0 +1,53 @@
+//ref: https://leetcode.com/problems/get-watched-videos-by-your-friends/discuss/1781305/Java-Solution-(BFS-%2B-HashMap-%2B-Heap)
+
+class Solution {
+    public class Pair {
+        String key;
+        Integer value;
+        Pair(String key,int value)
+        {
+            this.key=key;
+            this.value=value;
+        }
+    }
+    public List<String> watchedVideosByFriends(List<List<String>> watchedVideos, int[][] friends, int id, int level) {
+        int n = friends.length;
+        int currL = 0;
+        boolean [] visited = new boolean[n];
+        Map<String, Integer> freq = new HashMap<>();
+        Queue<Integer> q = new LinkedList<>();
+        q.add(id);
+        visited[id] = true;
+        while (!q.isEmpty()) {
+            int len = q.size();
+            currL +=1;
+            while (len-- > 0) {
+                int curr = q.poll();
+                for (int friend : friends[curr]) {
+                    if (visited[friend]) continue;
+                    q.add(friend);
+                    visited[friend] =true;
+                    if (currL == level) {
+                        for (String video : watchedVideos.get(friend)) {
+                            freq.put(video, freq.getOrDefault(video, 0)+1);
+                        }
+                    }
+                }
+            }         
+        }
+        Queue<Pair> pq = new PriorityQueue<>((a, b) -> {
+            if (a.value != b.value) 
+                return a.value - b.value;
+            return a.key.compareTo(b.key);
+        });
+        for (String temp : freq.keySet()) {
+            int num = freq.get(temp);
+            pq.add(new Pair(temp, num));
+        }
+        List<String> res = new LinkedList<>();
+        while (!pq.isEmpty()) {
+            res.add(pq.poll().key);
+        }
+        return res;
+    }
+}
