@@ -1,0 +1,33 @@
+//ref: https://leetcode.com/problems/detect-cycles-in-2d-grid/discuss/812038/Java-Simple-BFS
+class Solution {
+    public boolean containsCycle(char[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        Queue<int []> q = new LinkedList<>();
+        int [][] dirs = new int [][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        boolean [][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (visited[i][j]) continue;
+                q.add(new int [] {i, j, -1, -1});
+                visited[i][j] = true;
+                while (!q.isEmpty()) {
+                    int len = q.size();
+                    while (len-- > 0) {
+                        int [] curr = q.poll();
+                        for (int k = 0; k < 4; k++) {
+                            int x = curr[0] + dirs[k][0];
+                            int y = curr[1] + dirs[k][1];
+                            if (x < 0 || x >= m || y < 0 || y >= n) continue;
+                            if (grid[x][y] != grid[curr[0]][curr[1]]) continue;
+                            if (x == curr[2] && y == curr[3]) continue;
+                            if (visited[x][y]) return true;
+                            q.add(new int [] {x, y, curr[0], curr[1]});
+                            visited[x][y] = true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}
