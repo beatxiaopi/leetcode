@@ -1,0 +1,53 @@
+//ref: https://leetcode.com/problems/count-subtrees-with-max-distance-between-cities/discuss/897561/If-you-find-it-is-difficult-to-understand-the-solution-of-this-problem-like-me
+
+class Solution {
+    int max;
+    public int[] countSubgraphsForEachDiameter(int n, int[][] edges) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        int [] result = new int[n-1];
+        for (int [] edge : edges) {
+            adj.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(edge[1]);
+            adj.computeIfAbsent(edge[1], k -> new ArrayList<>()).add(edge[0]);
+        }
+        for (int i = 0; i < (1<<n); i++) {
+            List<Integer> subtree = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                if ((i & (1<<j)) !=0) {
+                    subtree.add(j+1);
+                }
+            }
+            int count = 0;
+            for (int [] edge : edges) {
+                if (subtree.contains(edge[0]) && subtree.contains(edge[1])) {
+                    count++;
+                }
+            } 
+            if (count < 1 || subtree.size()-1 !=count) continue;
+            Set<Integer> visited = new HashSet<>();
+            max = 0;
+            visited.add(subtree.get(0));
+            dfs (subtree.get(0), subtree, adj, visited);
+            result[max-1]++;
+        }
+        return result;
+    }
+    private int dfs(int start, List<Integer> subtree, Map<Integer, List<Integer>> adj,
+                    Set<Integer> visited) {
+        int m1 = 0, m2 = 0;
+        for (int next : adj.get(start)) {
+            if (!visited.contains(next) && subtree.contains(next)) {
+                visited.add(next);
+                int curr = dfs(next, subtree, adj, visited);
+                if (curr > m1) {
+                    m2 = m1;
+                    m1 = curr;
+                }
+                else if (curr > m2) {
+                    m2 = curr;
+                }
+            }
+        }
+        max = Math.max(max, m1+m2);
+        return m1+1;
+    }
+}
