@@ -1,4 +1,4 @@
-//ref:https://leetcode.com/problems/count-sub-islands/discuss/1284261/Java-DFS
+//ref:https://leetcode.com/problems/count-sub-islands/discuss/1284370/Java-or-BFS-DFS-or-Similar-to-Number-of-Islands
 
 class Solution {
     int count =0;
