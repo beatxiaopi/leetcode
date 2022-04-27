@@ -1,0 +1,39 @@
+class Solution {
+    public int secondMinimum(int n, int[][] edges, int time, int change) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int [] edge : edges) {
+            map.computeIfAbsent(edge[0], k-> new ArrayList()).add(edge[1]);
+            map.computeIfAbsent(edge[1], k-> new ArrayList()).add(edge[0]);
+        }
+        
+        int [] visited = new int[n+1];
+        int [] dist = new int[n+1];
+        Queue<int []> q = new LinkedList<>();
+        q.add(new int [] {1, 0});
+        dist[1] = 0;
+        visited[1] = 1;
+        
+        while (!q.isEmpty()) {
+            int [] curr = q.poll();
+            int round = curr[1]/change;
+            int tt = 0;
+            if (round %2 == 0) {
+                tt = curr[1] + time;
+            }
+            else {
+                tt = (round + 1) * change + time;
+            }
+            for (int next : map.get(curr[0])) {
+                if (visited[next] < 2 && dist[next] < tt) {
+                    visited[next] +=1;
+                    dist[next] = tt;
+                    q.add(new int [] {next, tt});
+                    if (visited[next] == 2 && next == n) {
+                        return tt;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+}
