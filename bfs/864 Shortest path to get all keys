@@ -1,0 +1,49 @@
+class Solution {
+    public int shortestPathAllKeys(String[] grid) {
+        int m = grid.length;
+        int n = grid[0].length();
+        Set<String> visited = new HashSet<>();
+        Queue<int []> q = new LinkedList<>();
+        int count = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i].charAt(j) == '@') {
+                    q.add(new int [] {i, j, 0});
+                    visited.add(0 + " " + i + " " + j);
+                }
+                if (grid[i].charAt(j) >= 'a' && grid[i].charAt(j) <= 'f') {
+                    count +=1;
+                }
+            }
+        }
+        int step = 0;
+        int [][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.isEmpty()) {
+            int len = q.size();
+            while (len-- > 0) {
+                int [] curr = q.poll();
+                for (int k = 0; k < 4; k++) {
+                    int x = curr[0] + dirs[k][0];
+                    int y = curr[1] + dirs[k][1];
+                    int key = curr[2];
+                    if (x < 0 || x >= m || y < 0 || y >= n) continue;
+                    char ch = grid[x].charAt(y);
+                    if (ch == '#') continue;
+                    if (ch >='a' && ch <='f') {
+                        key |= (1<<(ch-'a'));
+                    }
+                    if (ch >= 'A' && ch <= 'F' && ((key>>(ch - 'A')) &1) == 0) {
+                        continue;
+                    }
+                    if (!visited.contains(key + " " + x + " " + y)) {
+                        q.add(new int [] {x, y, key});
+                        visited.add(key + " " + x + " " + y);
+                    }
+                    if (key == (1<<count) -1) return step+1;
+                }
+            }
+            step +=1;
+        }
+        return -1;
+    }
+}
