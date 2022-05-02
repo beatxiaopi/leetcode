@@ -1,0 +1,73 @@
+class Solution {
+    int [][][] color = new int[50][50][3]; //memo for all possible positions 1: mouse win; 2: cat win
+    public int catMouseGame(int[][] graph) {
+        Queue<int []> q = new LinkedList<>();
+        int n = graph.length;
+        for (int turn = 1; turn <=2; turn++) {
+            for (int i = 1; i < n; i++) { //all starting states cat wins
+                color[i][i][turn] = 2;
+                q.add(new int [] {i, i, turn});
+            }
+            for (int j = 1; j < n; j++) {
+                color[0][j][turn] = 1;
+                q.add(new int [] {0, j, turn});
+            }
+        }
+        while (!q.isEmpty()) {
+            int [] curr = q.poll();
+            int m = curr[0];
+            int c = curr[1];
+            int t = curr[2];
+            int status = color[m][c][t];
+            for (int [] adj : findAdj(graph, m, c, t)) {
+                int m1 = adj[0];
+                int c1 = adj[1];
+                int t1 = adj[2];
+                if (color[m1][c1][t1] != 0) continue;
+                if (t1 == status) {
+                    color[m1][c1][t1] = status;
+                    q.add(new int [] {m1, c1, t1});
+                }
+                else if (allOpponentWin(graph, m1, c1, t1)) {
+                    color[m1][c1][t1] = (t1 == 1)? 2:1;
+                    q.add(new int [] {m1, c1, t1});
+                }
+            }
+        }
+        return color[1][2][1];
+    }
+    private List<int []> findAdj(int[][] graph, int m, int c, int t) {
+        List<int []> res = new ArrayList<>();
+        if (t == 1) { //prev move done by cat
+            for (int prevC : graph[c]) {
+                if (prevC != 0) {
+                    res.add(new int [] {m, prevC, 2});
+                }
+            }
+        }
+        else {
+            for (int prevM : graph[m]) {
+                res.add(new int [] {prevM, c, 1});
+            }
+        }
+        return res;
+    }
+    private boolean allOpponentWin(int [][] graph, int m, int c, int t) {
+        if (t == 1) {
+            for (int nextM : graph[m]) {
+                if (color[nextM][c][2] != 2) {
+                    return false;
+                }
+            }
+        }
+        else if (t == 2) {
+            for (int nextC : graph[c]) {
+                if (nextC != 0 && color[m][nextC][1] != 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
