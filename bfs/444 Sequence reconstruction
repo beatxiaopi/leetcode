@@ -1,3 +1,4 @@
+//ref: https://leetcode.com/problems/sequence-reconstruction/discuss/2002509/Java-Topological-sort-using-BFS
 class Solution {
     public boolean sequenceReconstruction(int[] nums, List<List<Integer>> sequences) {
         Map<Integer, Set<Integer>> map = new HashMap<>();
