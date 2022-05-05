@@ -1,0 +1,36 @@
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int n = graph.length;
+        List<Integer> [] adj = new ArrayList [n];
+        int [] outDegree = new int[n];
+        for (int i = 0; i < n; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < n; i++) {
+            if (graph[i].length > 0) {
+                for (int prev : graph[i]) {
+                    adj[prev].add(i);
+                    outDegree[i] +=1;
+                }
+            } 
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (outDegree[i] == 0) {
+                q.add(i);
+            }
+        }
+        Set<Integer> res = new TreeSet();
+        while (!q.isEmpty()) {
+            int curr = q.poll();
+            res.add(curr);
+            for (int prev : adj[curr]) {
+                outDegree[prev] -=1;
+                if (outDegree[prev] == 0) {
+                    q.add(prev);
+                }
+            }
+        }
+        return new ArrayList<>(res);
+    }
+}
