@@ -1,0 +1,15 @@
+class Solution {
+    public int nthUglyNumber(int n) {
+        int [] res = new int[n];
+        int i=0, j=0, k =0;
+        res[0]=1;
+        for (int m = 1; m < n; m++) {
+            int curr = Math.min(res[i] * 2, Math.min((res[j] * 3), res[k] *5));
+            res[m] = curr;
+            if (res[i] * 2 == curr) i++;
+            if (res[j] * 3 == curr) j++;
+            if (res[k] * 5 == curr) k++;
+        }
+        return res[n-1];
+    }
+}
