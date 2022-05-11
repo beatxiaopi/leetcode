@@ -1,0 +1,51 @@
+class Solution {
+    public int numDecodings(String s) {
+        int n = s.length();
+        long M = 1000000007;
+        s = "#" + s;
+        long [] dp = new long[n+1];
+        dp[0] = 1;
+        if (s.charAt(1) == '*') dp[1] = 9;
+        else if (s.charAt(1) == '0') dp[1] = 0;
+        else dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            char ch = s.charAt(i);
+            char ch1 = s.charAt(i-1);
+            if (Character.isDigit(ch)) {
+                if (ch != '0') dp[i] += dp[i-1];
+                if (Character.isDigit(ch1)) {
+                    int num = (ch1-'0')*10 + ch-'0';
+                    if (num >= 10 && num <=26) {
+                        dp[i] += dp[i-2];
+                    }
+                }
+                else {
+                    if (ch <= '6') {
+                        dp[i] += dp[i-2] * 2;
+                    }
+                    else dp[i] += dp[i-2];
+                }
+            }
+            else {
+                dp[i] += dp[i-1] * 9;
+                if (ch1 == '1') dp[i] += dp[i-2] * 9;
+                else if (ch1 == '2') dp[i] += dp[i-2] * 6;
+                else if (ch1 == '*') dp[i] += dp[i-2] * 15;
+            }
+            dp[i] %= M;
+        }
+        return (int) dp[n];
+    }
+}
+
+// xxx S L 
+// xxx 1*
+// xxx 2*
+// xxx *1-9
+// xxx **
+
+//xxx D(if D = 1, L = 1-9) dp[i] += dp[i-1]x9
+
+//xxx D(if 2, 1-6) dp[i] += dp[i-1]x6
+
+//xxx *(if 1-9) dp[i] += 
