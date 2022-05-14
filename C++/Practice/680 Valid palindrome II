@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool validPalindrome(string s) {
+        return valid(s, 0);
+    }
+    bool valid(string s, int level) {
+        if (level > 1) return false;
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            if (s[i] == s[n-1-i]) continue;
+            return (valid(s.substr(i+1, n-1-2*i), level + 1) 
+                    || valid(s.substr(i, n-1-2*i), level + 1));
+            
+        }
+        return true;
+    }
+};
