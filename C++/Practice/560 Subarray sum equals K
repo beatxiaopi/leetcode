@@ -1,0 +1,14 @@
+// ref:https://leetcode.com/problems/subarray-sum-equals-k/discuss/418288/BEAUTIFUL-O(n)-solution-in-10-lines-of-code!
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;
+        int preSum, count = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            freq[preSum] ++;
+            preSum += nums[i];
+            count += freq[preSum - k];
+        }
+        return count;
+    }
+};
