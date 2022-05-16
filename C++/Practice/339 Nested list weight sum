@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int depthSum(vector<NestedInteger>& nestedList) {
+        return dfs(nestedList, 1);
+    }
+    int dfs(vector<NestedInteger>& nestedList, int level) {
+        int res = 0;
+        for (NestedInteger curr : nestedList) {
+            if (curr.isInteger()) {
+                res += curr.getInteger() * level;
+            }
+            else {
+                res += dfs(curr.getList(), level+1);
+            }
+        }
+        return res;
+    }
+};
