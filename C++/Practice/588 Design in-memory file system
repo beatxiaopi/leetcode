@@ -1,0 +1,88 @@
+//ref: https://leetcode.com/problems/design-in-memory-file-system/discuss/103329/C%2B%2B-Trie-Solution
+class FileSystem {
+public:
+    struct FileNode{
+        unordered_map<string, FileNode *> children;
+        bool isFile;
+        string content;
+        FileNode (bool isFile) {
+            this -> isFile = isFile;
+        }
+    };
+public:
+    FileNode * root;
+    vector<string> parse(string & path) {
+        vector<string> ans;
+        int i = 1, j = 1;
+        while (j <= path.length()) {
+            if (i != j && (j == path.length() || path[j] == '/')) {
+                ans.push_back(path.substr(i, j - i));
+                i = j + 1;
+            }
+            ++j;
+        }
+        return ans;
+    }
+    
+    FileSystem() {
+        root = new FileNode(false);
+    }
+    
+    vector<string> ls(string path) {
+        vector<string> split = parse(path);
+        FileNode * ptr = root;
+        for (auto curr : split) {
+            ptr = ptr -> children[curr];
+        }
+        if (ptr -> isFile) return {split.back()};
+        
+        vector<string> res;
+        for (auto curr : ptr -> children) {
+            res.push_back(curr.first);
+        }
+        sort(res.begin(), res.end());
+        return res;  
+    }
+    
+    void mkdir(string path) {
+        vector<string> split = parse(path);
+        FileNode * ptr = root;
+        for (auto curr : split) {
+            if (!ptr -> children.count(curr)) {
+                ptr -> children[curr] = new FileNode(false);
+            }
+            ptr = ptr -> children[curr];
+        }
+    }
+    
+    void addContentToFile(string filePath, string content) {
+        vector<string> split = parse(filePath);
+        FileNode * ptr = root;
+        for (auto curr : split) {
+            if (!ptr -> children.count(curr)) {
+                ptr -> children[curr] = new FileNode(false);
+            }
+            ptr = ptr -> children[curr];
+        }
+        ptr -> isFile = true;
+        ptr -> content += content;
+    }
+    
+    string readContentFromFile(string filePath) {
+        vector<string> split = parse(filePath);
+        FileNode * ptr = root;
+        for (auto curr : split) {
+            ptr = ptr -> children[curr];
+        }
+        return ptr -> content;
+    }
+};
+
+/**
+ * Your FileSystem object will be instantiated and called as such:
+ * FileSystem* obj = new FileSystem();
+ * vector<string> param_1 = obj->ls(path);
+ * obj->mkdir(path);
+ * obj->addContentToFile(filePath,content);
+ * string param_4 = obj->readContentFromFile(filePath);
+ */
