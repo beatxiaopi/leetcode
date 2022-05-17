@@ -17,3 +17,44 @@ public:
         return count;
     }
 };
+///recursion method (slower)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+public:
+     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+       map<TreeNode*, TreeNode*> parent;
+      stack<TreeNode*> stk;
+      parent.insert(pair<TreeNode*,TreeNode*>(root, NULL));
+      stk.push(root);
+
+      while (parent.find(p)==parent.end() || parent.find(q)==parent.end()) {
+          TreeNode *node = stk.top();
+          stk.pop();
+          if (node->left != NULL) {
+              parent.insert(pair<TreeNode*,TreeNode*>(node->left, node));
+              stk.push(node->left);
+          }
+          if (node->right != NULL) {
+              parent.insert(pair<TreeNode*,TreeNode*>(node->right, node));
+              stk.push(node->right);
+          }
+      }
+      set<TreeNode*> ancestors;
+      while (p != NULL) {
+          ancestors.insert(p);
+          p = parent.find(p)!=parent.end()? (*(parent.find(p))).second: NULL;
+      }
+      while (ancestors.find(q)==ancestors.end())
+          q = parent.find(q)!=parent.end()? (*(parent.find(q))).second: NULL;
+      return q;
+    }
+};
