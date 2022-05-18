@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int uniqueLetterString(string s) {
+        vector<vector<int>> adj(26);
+        int n = s.size();
+        for (int i = 0; i < 26; i++) {
+            adj[i].push_back(-1);
+        }
+        for (int i = 0; i < n; i++) {
+            adj[s[i]-'A'].push_back(i);
+        }
+        for (int i = 0; i < 26; i++) {
+            adj[i].push_back(n);
+        }
+        int res = 0;
+        for (int k = 0; k < 26; k++) {
+            for (int i = 1; i < adj[k].size() -1; i++) {
+                res += (adj[k][i] - adj[k][i-1]) * (adj[k][i+1] - adj[k][i]);
+            }
+        }
+        return res;
+    }
+};
