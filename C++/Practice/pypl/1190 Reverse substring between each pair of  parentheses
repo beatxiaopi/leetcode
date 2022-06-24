@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        stack<int> Stack;
+        string ret;
+        for(auto ch : s) {
+            if (isalpha(ch)) {
+                ret.push_back(ch);
+            }
+            else if (ch == '(') {
+                Stack.push(ret.size());
+            }
+            else {
+                int j = Stack.top();
+                Stack.pop();
+                reverse(ret.begin() + j, ret.end());
+            }
+        }
+        return ret;
+    }
+};
