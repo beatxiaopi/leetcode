@@ -1,0 +1,20 @@
+class HitCounter {
+    queue<int> q;
+public:
+    HitCounter() {
+        
+    }
+    
+    void hit(int timestamp) {
+        q.push(timestamp);
+    }
+    
+    int getHits(int timestamp) {
+        while(!q.empty()) {
+            int diff = timestamp - q.front();
+            if (diff >= 300) q.pop();
+            else break;
+        }
+        return q.size();
+    }
+};
