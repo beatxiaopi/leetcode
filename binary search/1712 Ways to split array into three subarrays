@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int waysToSplit(vector<int>& nums) {
+        int n = nums.size();
+        vector<long long>presum(n,0);
+        presum[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            presum[i] = presum[i-1] + nums[i];
+        }
+        long long res = 0;
+        long long M = 1e9 + 7;
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            
+            while (j <= i || (j < n && presum[j] - presum[i] < presum[i])) j++;
+            if (j == n) break;
+            auto iter = upper_bound(presum.begin(), presum.end(), 0.5 * (presum[i] + presum[n-1])) -1;
+            int k = iter - presum.begin();
+            if (k == n - 1) k--;
+            if (k < j) continue;
+            res += k - j + 1;
+            res %= M;
+        }
+        return res;
+    }
+};
