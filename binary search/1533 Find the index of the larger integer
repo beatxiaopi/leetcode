@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int getIndex(ArrayReader &reader) {
+        int l = 0, r = reader.length() - 1;
+        while (l <= r) {
+            int mid = l + (r-l)/2;
+            int val = 0;
+            if ((r-l) %2 == 0) {
+                val = reader.compareSub(l, mid, mid, r);
+            }
+            else {
+                val = reader.compareSub(l, mid, mid+1, r);
+            }
+            if (val == 1) r = mid;
+            else if (val == -1) l = mid + 1;
+            else return mid;
+        }
+        return l;
+    }
+};
