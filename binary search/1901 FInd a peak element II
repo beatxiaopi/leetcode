@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<int> findPeakGrid(vector<vector<int>>& mat) {
+        int n = mat.size();
+        int left = 0, right = n - 1;
+        while (left <= right) {
+            int mid = left + (right - left)/2;
+            int midMax = *max_element(mat[mid].begin(), mat[mid].end());
+            int upperMax = mid == 0 ? -1 : *max_element(mat[mid-1].begin(), mat[mid-1].end());
+            int lowerMax = mid == n - 1 ? -1 : *max_element(mat[mid+1].begin(), mat[mid+1].end());
+            int Max = max(upperMax, max(midMax, lowerMax));
+            if (Max == midMax) return {mid, int(max_element(mat[mid].begin(), mat[mid].end()) - mat[mid].begin())};
+            else if (Max == upperMax) right = mid - 1;
+            else left = mid + 1;
+        }
+        return {-1, -1};
+    }
+};
