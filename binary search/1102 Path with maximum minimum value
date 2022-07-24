@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int maximumMinimumPath(vector<vector<int>>& grid) {
+        int left = 0, right = 1e9;
+        while (left < right) {
+            int mid = right - (right - left)/2;
+            if (check(grid, mid)) {
+                left = mid;
+            }
+            else right = mid - 1;
+        }
+        return left;
+    }
+    
+    bool check(vector<vector<int>>& grid, int K) {
+        if (grid[0][0] < K) return false;
+        auto dir = vector<pair<int, int>>({{1, 0}, {-1, 0}, {0, 1}, {0, -1}});
+        int M = grid.size(), N = grid[0].size();
+        queue<pair<int, int>>q;
+        q.push({0, 0});
+        vector<vector<int>>visited(M, vector<int>(N));
+        visited[0][0] = 1;
+        while (!q.empty()) {
+            int a = q.front().first;
+            int b = q.front().second;
+            q.pop();
+            
+            for (int k = 0; k < 4; k++) {
+                int x = a + dir[k].first;
+                int y = b + dir[k].second;
+                if (x < 0 || x >= M || y < 0 || y >= N) continue;
+                if (grid[x][y] < K) continue;
+                if (visited[x][y]) continue;
+                if (x == M - 1 && y == N - 1) return true;
+                visited[x][y] = 1;
+                q.push({x, y});
+            }
+        }
+        return false;
+    }
+};
