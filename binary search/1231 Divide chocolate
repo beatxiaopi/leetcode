@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maximizeSweetness(vector<int>& sweetness, int k) {
+        int cut = k + 1;
+        int left = *min_element(sweetness.begin(), sweetness.end());
+        int right = accumulate(sweetness.begin(), sweetness.end(), 0) / cut;
+        while (left < right) {
+            int mid = left + (right - left + 1) / 2;
+            if (check(sweetness, mid, cut)) left = mid;
+            else right = mid - 1;
+        }
+        return left;
+    }
+    
+    bool check(vector<int>& sweetness, int S, int cut) {
+        int sum = 0;
+        int count = 0;
+        for (auto curr : sweetness) {
+            sum += curr;
+            if (sum >= S) {
+                count += 1;
+                sum = 0;
+            }
+            
+        }
+        return count >= cut;
+    }
+};
