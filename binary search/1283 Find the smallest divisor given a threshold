@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int left = 1, right = INT_MAX;
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            if (checkOK(nums, mid, threshold))  right = mid;
+            else left = mid + 1;
+        }
+        return left;
+    }
+    
+    bool checkOK(vector<int>& nums, int mid, int threshold) {
+        int sum = 0;
+        for (auto x : nums) {
+            if (x % mid == 0) {
+                sum += x/mid;
+            }
+            else sum += x/mid + 1;
+        }
+        return sum <= threshold;
+    }
+};
