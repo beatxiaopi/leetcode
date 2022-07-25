@@ -1,4 +1,4 @@
-//Binary search + BFS
+//Binary search + BFS method 1
 class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
@@ -37,3 +37,43 @@ public:
     }
 };
 
+//union-find method 2
+class Solution {
+    int father[10001];
+    int findFather(int x) {
+        if (father[x] != x) {
+            father[x] = findFather(father[x]);
+        }
+        return father[x];
+    }
+    
+    void Union(int x, int y) {
+        x = father[x];
+        y = father[y];
+        if (x < y) father[y] = x;
+        else father[x] = y;
+    }
+    
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int m = heights.size(), n = heights[0].size();
+        for (int i = 0; i < m * n; i++) father[i] = i; //initialization
+        vector<vector<int>>adj; //adjacent edges and effort
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i != m - 1) adj.push_back({abs(heights[i][j] - heights[i+1][j]), i*n+j, (i+1)*n+j});
+                if (j != n - 1) adj.push_back({abs(heights[i][j] - heights[i][j+1]), i*n+j, i*n+j+1});
+            }
+        }
+        sort(adj.begin(), adj.end());
+        for (auto x : adj) {
+            if (findFather(x[1]) != findFather(x[2])) {
+                Union(x[1], x[2]);
+            }
+            if (findFather(0) == findFather((m - 1)*n + n-1)) {
+                return x[0];
+            }
+        }
+        return 0;
+    }
+};
