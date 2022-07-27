@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        int rob = nums[0], norob = 0;
+        for (int i = 1; i < nums.size(); i++) {
+            int robTemp = rob, norobTemp = norob;
+            norob = max(robTemp, norobTemp);
+            rob = norobTemp + nums[i];
+        }
+        return max(rob, norob);
+    }
+};
