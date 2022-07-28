@@ -1,0 +1,18 @@
+using LL = long long;
+class Solution {
+public:
+    int distinctSubseqII(string s) {
+        int n = s.size();
+        LL M = 1e9+7;
+        s = "#" + s;
+        auto dp = vector<LL>(2005, 0);
+        dp[0] = 1;
+        vector<int>last(26, 0);
+        for (int i = 1; i <= n; i++) {
+            int j = last[s[i]-'a'];
+            dp[i] = (2*dp[i-1]%M - (j >= 1 ? dp[j-1]:0) + M)%M;
+            last[s[i] - 'a'] = i;
+        }
+        return dp[n] - 1;
+    }
+};
