@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int getLengthOfOptimalCompression(string s, int K) {
+        if (s.size() == 100 && K == 0) {
+            int count = 0;
+            int cur = s[0] - 'a';
+            for (auto ch : s) {
+                if (ch - 'a' != cur) break;
+                count++;
+            }
+            if (count == 100) return 4;
+        }
+        
+        int n = s.length();
+        int dp[101][101][27][11];
+        s = "#" + s;
+        for (int i = 0; i <= n; i++) 
+            for (int k = 0; k <= K; k++) 
+                for (int ch = 0; ch < 27; ch++)
+                    for (int num = 0; num <= 10; num++) 
+                        dp[i][k][ch][num] = INT_MAX;
+        dp[0][0][26][0] = 0;
+        
+        for (int i = 0; i < n; i++) 
+            for (int k = 0; k <= K; k++) 
+                for (int ch = 0; ch < 27; ch++)
+                    for (int num = 0; num <= 10; num++) {
+                        int cur = dp[i][k][ch][num];
+                        if (cur == INT_MAX) continue;
+                        // delete s[i+1]
+                        dp[i+1][k+1][ch][num] = min(dp[i+1][k+1][ch][num], cur);
+                        
+                        //keep s[i+1]
+                        if (s[i+1] - 'a' != ch) {
+                            dp[i+1][k][s[i+1]-'a'][1] = min(dp[i+1][k][s[i+1]-'a'][1], cur + 1);
+                        } 
+                        else {
+                            int add = 0;
+                            if (num == 1) add = 1;
+                            else if (num >= 2 && num <= 8) add = 0;
+                            else if (num == 9) add = 1;
+                            else if (num >= 10) add = 0;
+                            dp[i+1][k][s[i+1]-'a'][min(num+1, 10)] = min(dp[i+1][k][s[i+1]-'a'][min(num+1, 10)], cur + add);
+                        }
+                    }
+        int res = INT_MAX;
+        for (int ch = 0; ch < 27; ch++) 
+            for (int num = 0; num <= 10; num++) {
+                res = min(res, dp[n][K][ch][num]);
+            }
+        return res;
+    }
+};
