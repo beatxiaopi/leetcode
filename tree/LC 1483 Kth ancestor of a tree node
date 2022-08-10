@@ -1,0 +1,33 @@
+class TreeAncestor {
+    vector<vector<int>>p;
+    int n;
+public:
+    TreeAncestor(int n, vector<int>& parent) {
+        vector<vector<int>>p(n, vector<int>(20, -1));
+        for (int i = 0; i < n; i++) {
+            p[i][0] = parent[i];
+        }
+        for (int j = 1; j < 20; j++) {
+            for (int i = 0; i < n; i++) {
+                if (p[i][j-1] != -1) {
+                    p[i][j] = p[p[i][j-1]][j-1];
+                }
+            }
+        }
+        this->p = p;
+        this->n = n;
+    }
+    
+    int getKthAncestor(int node, int k) {
+        for (int j = 0; j < 20; j++) {
+            if ((k>>j)&1) {
+                node = p[node][j];
+                if (node == -1) break;
+            }
+        }
+        return node;
+    }
+};
+
+//method 2: DFS
+//ref: https://leetcode.com/problems/kth-ancestor-of-a-tree-node/discuss/689481/Beats-97-DFS-%2B-Binary-Search-Detailed
