@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int largestVariance(string s) {
+        vector<int>count(26);
+        for (char ch : s) {
+            count[ch - 'a']++;
+        }
+        int n = s.size();
+        int res = 0;
+        for (int i = 0; i < 26; i++) 
+            for (int j = 0; j < 26; j++) {
+                if (count[i] == 0 || count[j] == 0) continue;
+                if (i == j) continue;
+                vector<int>nums(n, 0);
+                
+                for (int k = 0; k < n; k++) {
+                    if (s[k] - 'a' == i) nums[k] = 1;
+                    else if (s[k] - 'a' == j) nums[k] = -1;
+                }
+                res = max(res, helper(nums));
+            }
+        return res;
+    }
+    
+    int helper(vector<int> & nums) {
+        int n = nums.size();
+        vector<int>dp1(n, 0);
+        dp1[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            dp1[i] = max(dp1[i-1]+nums[i], nums[i]);
+        }
+        int dp2 = 0;
+        int ret = 0;
+        for (int j = n - 1; j >= 0; j--) {
+            dp2 = max(dp2 + nums[j], nums[j]);
+            if (nums[j] == -1) {
+                ret = max(ret, dp1[j] + dp2 - nums[j]);
+            }
+        }
+        return ret;
+    }
+};
