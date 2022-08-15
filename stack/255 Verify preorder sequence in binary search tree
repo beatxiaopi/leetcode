@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool verifyPreorder(vector<int>& preorder) {
+        return dfs (preorder, 0, preorder.size() - 1);
+        // Method 2: 
+        // int low = INT_MIN;
+        // stack<int>Stack;
+        // for (auto x : preorder) {
+        //     if (x < low) return false;
+        //     while(!Stack.empty() && Stack.top() < x) {
+        //         low = max(low, Stack.top());
+        //         Stack.pop();
+        //     }
+        //     Stack.push(x);
+        // }
+        // return true;
+    }
+    bool dfs(vector<int>& preorder, int start, int end) {
+        if (start >= end) return true;
+        //exit condition
+        int root = preorder[start];
+        //root is always the first element
+        int right = start + 1;
+        while (right <= end && preorder[right] < root) {
+            right++;
+        }
+        
+        for (int j = right; j <= end; j++) {
+            if (preorder[j] <= root) return false;
+        }
+        
+        return dfs(preorder, start + 1, right - 1) && dfs(preorder, right, end);
+        // find the position of right subtree which is the first element larger than the root
+    }
+};
