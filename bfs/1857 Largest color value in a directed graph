@@ -1,0 +1,63 @@
+class Solution {
+    vector<int>next[100000];
+    int inDegree[100000];
+    int n;
+public:
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        
+        int n = colors.size();
+        this->n = n;
+        unordered_set<int>Set;
+        for (auto x : edges) {
+            int a = x[0], b = x[1];
+            next[a].push_back(b);
+            inDegree[b]++;
+        }
+        
+        for (auto ch : colors) {
+            Set.insert(ch - 'a');
+        }
+        
+        int res = 1;
+        for (int i = 0; i < 26; i++) {
+            if (Set.find(i) == Set.end()) continue;
+            int temp = bfs(i, colors);
+            if (temp == -1) return temp;
+            res = max(res, temp);
+        }
+        return res;
+    }
+    
+    int bfs(int x, string colors) {
+        queue<int>q;
+        vector<int>count(n, 0);
+        int res = 0;
+        int node = 0;
+        vector<int>in(n, 0);
+        for (int i = 0; i < n; i++) {
+            in[i] = inDegree[i];
+        }
+        for (int i = 0; i < n; i++) {
+            if (in[i] == 0) {
+                node++;
+                if (colors[i] - 'a' == x) count[i]++;
+                q.push(i);
+            }
+        }
+        while (!q.empty()) {
+            int curr = q.front();
+            q.pop();
+            for (auto p : next[curr]) {
+                count[p] = max(count[p], count[curr] + (colors[p] - 'a' == x));
+                res = max(res, count[p]);
+                in[p]--;
+                if (in[p] == 0) {
+                    q.push(p);
+                    node++;
+                }
+            }
+        }
+        if (node == n) return res;
+        else return -1;
+    }
+};
