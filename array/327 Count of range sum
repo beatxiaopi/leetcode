@@ -1,0 +1,57 @@
+class Solution {
+    int res = 0;
+    long temp[100001];
+public:
+    int countRangeSum(vector<int>& nums, int lower, int upper) {
+        int n = nums.size();
+        vector<long>presum(n+1, 0);
+        for (int i = 0; i < n; i++) {
+            presum[i+1] = presum[i] + nums[i];
+        }
+        
+        helper(presum, 0, n, lower, upper);
+        return res;
+    }
+    
+    void helper(vector<long>& presum, int a, int b, int lower, int higher) {
+        if (a >= b) return;
+        int mid = a + (b - a) / 2;
+        helper(presum, a, mid, lower, higher);
+        helper(presum, mid + 1, b, lower, higher);
+        for (int i = a; i <= mid; i++) {
+            auto x = lower_bound(presum.begin() + mid + 1, presum.begin() + b + 1, presum[i] + lower);
+            auto y = upper_bound(presum.begin() + mid + 1, presum.begin() + b + 1, presum[i] + higher);
+            res += y - x;
+        }
+        // inplace_merge(presum.begin() + a, presum.begin() + mid + 1, presum.begin() + b + 1);
+        
+        int i = a, j = mid + 1, p = 0;
+        while (i <= mid && j <= b) {
+            if (presum[i] <= presum[j]) {
+                temp[p] = presum[i];
+                i++;
+            }
+            else {
+                temp[p] = presum[j];
+                j++;
+            }
+            p++;
+        }
+        while (i <= mid) {
+            temp[p] = presum[i];
+            i++;
+            p++;
+        }
+        while (j <= b) {
+            temp[p] = presum[j];
+            j++;
+            p++;
+        }
+        for (int i = 0; i < b - a + 1; i++) {
+            presum[a + i] = temp[i];
+        }
+    }
+};
+
+// sum[i:j] -> presum[j] - presum[i-1];
+// equals finding i, j that lower <= presum[j] - presum[i-1] <= upper;
