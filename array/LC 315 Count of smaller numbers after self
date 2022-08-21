@@ -1,0 +1,64 @@
+class Solution {
+    vector<int>count;
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        int n = nums.size();
+        count.resize(n);
+        
+        auto sorted = nums;
+        helper(nums, sorted, 0, n-1);
+        return count;
+    }
+    
+    void helper(vector<int>& nums, vector<int>& sorted, int a, int b) {
+        if (a >= b) return;
+        int mid = a + (b-a)/2;
+        helper(nums, sorted, a, mid);
+        helper(nums, sorted, mid+1, b);
+        
+        for (int i = a; i <= mid; i++) {
+            auto iter = lower_bound(sorted.begin() + mid + 1, sorted.begin() + b + 1, nums[i]);
+            
+            
+            count[i] += iter - (sorted.begin() + mid + 1);
+        }
+        // sort(sorted.begin() + a, sorted.begin() + b + 1);
+        // inplace_merge(sorted.begin() + a, sorted.begin() + mid + 1, sorted.begin() + b + 1);
+        vector<int>temp(b-a+1, 0);
+        int i = a;
+        int j = mid + 1;
+        int p = 0;
+        while (i <= mid && j <=b) {
+            if (sorted[i] <= sorted[j]) {
+                temp[p] = sorted[i];
+                i++;
+            }
+            else {
+                temp[p] = sorted[j];
+                j++;
+            }
+            p++;
+        }
+        
+        while (i <= mid) {
+            temp[p] = sorted[i];
+            i++;
+            p++;
+        }
+        
+        while (j <= b) {
+            temp[p] = sorted[j];
+            j++;
+            p++;
+        }
+        
+        for (int i = 0; i < b - a + 1; i++) {
+            sorted[a + i] = temp[i];
+        }
+    }
+};
+
+// A[X X X X X Y Y Y Y Y];
+// B[X X X X X] C[Y Y Y Y Y];
+
+
