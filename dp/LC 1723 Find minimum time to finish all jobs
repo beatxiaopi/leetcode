@@ -1,0 +1,119 @@
+//Method 1: state compression dp
+class Solution {
+    int dp[13][4096];
+    int count[4097];
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        int n = jobs.size();
+        for (int state = 1; state < (1<<n); state++) {
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                if ((state>>i)& 1) {
+                    sum += jobs[i];
+                }
+            }
+            count[state] = sum;
+        }
+        for (int state = 1; state < (1<<n); state++) {
+            dp[0][state] = INT_MAX;
+        }
+        dp[0][0] = 0;
+        for (int i = 1; i <= k; i++) {
+            for (int state = 0; state < (1<<n); state++) {
+                dp[i][state] = INT_MAX;
+                for (int subset = state; subset > 0; subset = (subset - 1) & state) {
+                    dp [i][state] = min(dp[i][state], max(dp[i - 1][state - subset], count[subset]));
+                }
+            }
+        }
+        return dp[k][(1<<n) -1];
+    }
+};
+
+//Method 2: binary search + state compression DFS
+class Solution {
+    int memo[4097][12];
+    int count[4097];
+    int k;
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        int n = jobs.size();
+        this-> k = k;
+        for (int state = 1; state < (1<<n); state++) {
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                if ((state>>i)& 1) {
+                    sum += jobs[i];
+                }
+            }
+            count[state] = sum;
+        }
+        
+        int left = 0;
+        int right = accumulate(jobs.begin(), jobs.end(), 0);
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            for (int i = 0; i < 4097; i++) {
+                for (int j = 0; j < 12; j++) {
+                    memo[i][j] = 0;
+                }
+            }
+            if (dfs((1<<n) - 1, mid, 0)) right = mid;
+            else left = mid + 1;
+        }
+        return left;
+    }
+    
+    bool dfs(int state, int th, int p) {
+        if (state == 0) return true;
+        if (p == k) return false;
+        if (memo[state][p]) return false;
+        for (int subset = state; subset > 0; subset = (subset - 1) & state) {
+            if (count[subset] > th) continue;
+            if (dfs(state - subset, th, p + 1)) {
+                return true;
+            }
+        }
+        memo[state][p] = 1;
+        return false;
+    }
+};
+
+//method 3: binary search with traditional DFS plus pruning
+class Solution {
+    int k;
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        int n = jobs.size();
+        this-> k = k;
+        sort(jobs.begin(), jobs.end());
+        reverse(jobs.begin(), jobs.end());
+        int left = 0;
+        int right = accumulate(jobs.begin(), jobs.end(), 0);
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            vector<int>workers(k,0);
+            if (dfs(workers, jobs, mid, 0)) right = mid;
+            else left = mid + 1;
+        }
+        return left;
+    }
+    
+    bool dfs(vector<int>&workers, vector<int>& jobs, int th, int i) {
+        if (i == jobs.size()) return true;
+        int flag = 0;
+        for (int j = 0; j < k; j++) {
+            if (workers[j] + jobs[i] > th) {
+                continue;
+            }
+            if (workers[j] == 0) {
+                if (flag == 1) continue;
+                flag = 1;
+            }
+            workers[j] += jobs[i];
+            if (dfs(workers, jobs, th, i+1)) return true;
+            workers[j] -= jobs[i];
+        }
+        return false;
+    }
+};
