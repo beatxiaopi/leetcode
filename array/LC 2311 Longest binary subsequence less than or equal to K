@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int longestSubsequence(string s, int k) {
+        int sum = 0, cnt = 0, pow = 1;
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (s[i] == '1' && (sum + pow) <= k) {
+                sum += pow;
+                cnt++;
+            }
+            else if ((sum + pow) > k) break;
+            pow<<=1;
+        }
+        return count(s.begin(), s.end(), '0') + cnt;
+    }
+};
