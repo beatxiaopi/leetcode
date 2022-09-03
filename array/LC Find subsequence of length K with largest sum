@@ -1,0 +1,22 @@
+using PI = pair<int, int>;
+class Solution {
+public:
+    vector<int> maxSubsequence(vector<int>& nums, int k) {
+        priority_queue<PI, vector<PI>>pq;
+        for (int i = 0; i < nums.size(); i++) {
+            pq.push({nums[i], i});
+        }
+        vector<PI>temp;
+        for (int i = 0; i < k; i++) {
+            temp.push_back(pq.top());
+            pq.pop();
+        }
+        sort(temp.begin(), temp.end(), [](const PI& l, const PI& r) {
+             return l.second < r.second;});
+        vector<int>res;
+        for (int i = 0; i < k; i++) {
+            res.push_back(temp[i].first);
+        }
+        return res;
+    }
+};
