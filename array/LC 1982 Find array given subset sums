@@ -1,0 +1,63 @@
+class Solution {
+public:
+    vector<int> recoverArray(int n, vector<int>& sums) {
+        vector<int>res;
+        if (dfs(sums, n, res)) {
+            return res;
+        }
+        return {};
+    }
+    
+    bool dfs(vector<int> sum, int n, vector<int>& res) {
+        if (n == 1) {
+            if (sum[0] != 0 && sum[1] != 0) {
+                return false;
+            }
+            else {
+                res.push_back(sum[1] == 0? sum[0]:sum[1]);
+                return true;
+            }
+        }
+        sort(sum.begin(), sum.end());
+        int k = sum.size();
+        
+        int d = sum[k-1] - sum[k-2];
+        
+        multiset<int>Set1(sum.begin(), sum.end());
+        vector<int>sums1;
+        for (int i = 0; i < k/2; i++) {
+            int num = *Set1.rbegin();
+            if (Set1.find(num - d) == Set1.end()) break;
+            Set1.erase(Set1.lower_bound(num));
+            Set1.erase(Set1.lower_bound(num - d));
+            sums1.push_back(num - d);
+        }
+        if (sums1.size() == k/2) {
+            res.push_back(d);
+            if (dfs(sums1, n-1, res)) {
+                return true;
+            }
+            res.pop_back();
+        }
+        
+        d = -d;
+        
+        multiset<int>Set2(sum.begin(), sum.end());
+        vector<int>sums2;
+        for (int i = 0; i < k/2; i++) {
+            int num = *Set2.begin();
+            if (Set2.find(num - d) == Set2.end()) break;
+            Set2.erase(Set2.lower_bound(num - d));
+            Set2.erase(Set2.lower_bound(num));
+            sums2.push_back(num - d);
+        }
+        if (sums2.size() == k/2) {
+            res.push_back(d);
+            if (dfs(sums2, n-1, res)) {
+                return true;
+            }
+            res.pop_back();
+        }
+        return false;
+    }
+};
