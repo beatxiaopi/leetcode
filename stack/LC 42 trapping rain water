@@ -1,0 +1,49 @@
+//method 1: monotonic stack
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int>Stack;
+        int res = 0;
+        for (int i = 0; i < height.size(); i++) {
+            while (!Stack.empty() && height[i] > height[Stack.top()]) {
+                int base = height[Stack.top()];
+                Stack.pop();
+                if (Stack.empty()) continue;
+                int h = min(height[Stack.top()], height[i]) - base;
+                int w = i - Stack.top() - 1;
+                res += h * w;
+            }
+            Stack.push(i);
+        }
+        return res;
+    }
+};
+/** Maintain a monotonic stack
+
+*1) when stack is empty, push first non-empty element as left
+*2) push all the element less than stack.top and calculate the area
+*3) 
+*
+*
+*/
+
+//method 2: two pointer
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int left = 0, right = height.size() - 1, leftMax = 0, rightMax = 0, res = 0;
+        while (left < right) {
+            leftMax = max(leftMax, height[left]);
+            rightMax = max(rightMax, height[right]);
+            if (leftMax < rightMax) {
+                res += max(0, leftMax - height[left]);
+                left++;
+            }
+            else {
+                res += max(0, rightMax - height[right]);
+                right--;
+            }
+        }
+        return res;
+    }
+};
