@@ -1,0 +1,52 @@
+//Method 1:
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char, int>freq;
+        for (auto x : tasks) {
+            freq[x]++;
+        }
+        priority_queue<int>pq;
+        for (auto [x,y] : freq) {
+            pq.push(y);
+        }
+        n++;
+        int res = 0;
+        while (!pq.empty()) {
+            int k = min(n, (int)pq.size());
+            vector<int>temp;
+            for (int i = 0; i < k; i++) {
+                int f = pq.top();
+                pq.pop();
+                f--;
+                if (f > 0) temp.push_back(f);
+            }
+            if (temp.size() > 0) res += n;
+            else res += k;
+            
+            for (auto x : temp) pq.push(x);
+        }
+        return res;
+    }
+};
+
+//method 2:
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        unordered_map<char, int>freq;
+        for (auto x : tasks) {
+            freq[x]++;
+        }
+        int maxFreq = 0;
+        int count = 0;
+        for (auto x : freq) {
+            maxFreq = max(maxFreq, x.second);
+        }
+        for (auto x : freq) {
+            if ((x.second) == maxFreq) count++;
+        }
+        
+        return max((maxFreq - 1)*(n+1) + count, (int) tasks.size());
+    }
+};
