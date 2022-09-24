@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        int res = 0;
+        unordered_map<int, int>count;
+        for (auto x : nums) {
+            count[x]++;
+        }
+        for (auto [curr, freq] : count) {
+            if (k > 0 && count.find(curr + k) != count.end()) {
+                res++;
+            }
+            else if (k == 0 && freq > 1) {
+                res++;
+            }
+        }
+        return res;
+    }
+};
