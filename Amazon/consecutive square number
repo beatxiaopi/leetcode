@@ -1,0 +1,47 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <map>
+using namespace std;
+
+
+int main() {
+    // Write C++ code here
+    int n = 3;
+    vector<int>data = {2, 8, 9, 1, 4, 3, 16};
+    sort(data.begin(), data.end());
+    
+    unordered_map<int, int>square;
+    int res = 0;
+    for (int i = 0; i < data.size(); i++) {
+        int x = data[i];
+        //cout<<"x="<<x<<";";
+        if (sqrt(x)*sqrt(x) == x && square.find(sqrt(x)) != square.end()) {
+            square[x] = square[sqrt(x)] + 1;
+            cout<<"key="<<square[x]<<";";
+        }
+        else square[x] ++;
+        //cout<<"square[x]="<<square[x]<<";";
+    }
+    
+    for (auto p : square) {
+        res = max(res, p.second);
+        //cout<<"key="<<p.first<<"val="<<p.second<<";";
+    }
+   
+    cout<<"res="<<res;
+    
+    return 0;
+}
+//  arr [2, 8, 9, 16, 4, 3]
+//
+
