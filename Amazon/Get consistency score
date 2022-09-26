@@ -1,0 +1,58 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+
+int main() {
+    // Write C++ code here
+    
+    vector<int>stock = {1,2,1,4,3,1,1,2,2,2,1,1,1};
+    int k = 3;
+    unordered_map<int, vector<pair<int, int>>>map;
+    map[stock[0]].push_back({0, 0});
+    for (int i = 1; i < stock.size(); i++) {
+        if (map.find(stock[i]) == map.end()) {
+            map[stock[i]].push_back({i, 0});
+        }
+        else {
+            int prev_sum = i - map[stock[i]].back().first - 1;
+            map[stock[i]].push_back({i, prev_sum});
+            cout<<prev_sum<<"|"<<"";
+        }
+    }
+    int res = 0;
+    for (auto x : map) {
+        int val = x.first;
+        vector<pair<int, int>>pos = x.second;
+        //cout<<val<<"?";
+        //cout<<val<<",";
+        for (int i = 0; i < pos.size(); i++) {
+            int j = i;
+            int rmv = 0;
+            while (j < pos.size() - 1 && rmv <= k) {
+                if (rmv + pos[j+1].second > k) break;
+                rmv += pos[j].second;
+                j++;
+            }
+            cout<<"rmv="<<rmv<<",";
+            //cout<<"j="<<j<<"  ";
+            if(rmv <= k) res = max(res, pos[j].first-pos[i].first-k+1);
+            cout<<"res="<<res<<";";
+        }
+    }
+    
+    return 0;
+}
+//     [1,2,1,4,3,1,1,2,2,2,1, 1, 1] k=3
+//idx   0,1,2,3,4,5,6,7,8,9,10,11,12
+
+//0 2 5 6 10 11 12
+//p   q
