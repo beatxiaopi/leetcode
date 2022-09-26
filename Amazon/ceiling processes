@@ -1,0 +1,54 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+
+int main() {
+    // Write C++ code here
+    int n = 3;
+    vector<int>data = {5, 5, 3, 6, 5, 3};
+    unordered_map<int, int>freq;
+    int res = 0;
+    for (int i = 0; i < data.size(); i++) {
+        if (freq.find(data[i]) == freq.end()) {
+            freq[data[i]]++;
+            res += data[i];
+        }
+        else {
+            freq[data[i]]++;
+            for (int j = 0; j < freq[data[i]]; j++) {
+                data[i] = ceil((double)data[i]/2);
+                //cout<<"data[i]="<<data[i]<<";";
+            }
+            res += data[i];
+            //cout<<"data[i]="<<data[i]<<";";
+        }
+        //cout<<"res="<<res<<":";
+    }
+   
+    cout<<"res="<<res;
+    
+    return 0;
+}
+//  time 0  [5, 5, 3, 6, 5, 3]
+//  group    1  1  2  3  1  2  
+//  time 5  [3, 3, 6, 3, 3]
+//  group    1  2  3  1  2        
+//  time 8  [3, 6, 2, 3]
+//  group    2  3  1  2       
+//  time 11 [6, 2, 2]
+//  group    3  1  2
+//  time 17 [2, 2]
+//  group    1  2
+//  time 19 [2]
+//  group    2
+//  time 21 []
