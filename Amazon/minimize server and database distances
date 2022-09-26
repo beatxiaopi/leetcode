@@ -1,0 +1,50 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+
+int main() {
+    // Write C++ code here
+    int n = 3;
+    vector<int>data = {1, 2, 2};
+    vector<int>server = {5, 2, 4};
+    sort(data.begin(), data.end());
+    sort(server.begin(), server.end());
+    int res = 0;
+    for (int i = 0; i < data.size(); i++) {
+        res += abs(data[i]-server[i]);
+    }
+    // priority_queue<int>pq_data;
+    // priority_queue<int>pq_server;
+    // int res = 0;
+    // for (auto x : data) {
+    //     pq_data.push(x);
+    // }
+    // for (auto y : server) {
+    //     pq_server.push(y);
+    // }
+    // while (!pq_data.empty() && !pq_server.empty()) {
+    //     int x1 = pq_data.top();
+    //     int x2 = pq_server.top();
+    //     res += abs(x1-x2);
+    //     pq_data.pop();
+    //     pq_server.pop();
+    // }
+    cout<<"res="<<res;
+    
+    return 0;
+}
+//d    [1,2,2] n=3
+//s    [5,2,4]
+//sort [2,4,5]
+//
+//
