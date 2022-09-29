@@ -1,0 +1,59 @@
+using LL = long long;
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        int n = nums.size();
+        vector<int>prevSmallerOrEqual(n, -1);
+        vector<int>nextSmaller(n, n);
+        vector<int>prevGreaterOrEqual(n, -1);
+        vector<int>nextGreater(n, n);
+        stack<int>Stack;
+        for (int i = 0; i < n; i++) {
+            while(!Stack.empty() && nums[Stack.top()] > nums[i]) {
+                nextSmaller[Stack.top()] = i;
+                Stack.pop();
+            }
+            
+            Stack.push(i);
+        }
+        while(!Stack.empty()) Stack.pop();
+        for (int i = n - 1; i >= 0; i--) {
+            while(!Stack.empty() && nums[Stack.top()] >= nums[i]) {
+                prevSmallerOrEqual[Stack.top()] = i;
+                Stack.pop();
+            }
+            
+            Stack.push(i);
+        }
+        while(!Stack.empty()) Stack.pop();
+        for (int i = 0; i < n; i++) {
+            while(!Stack.empty() && nums[Stack.top()] < nums[i]) {
+                nextGreater[Stack.top()] = i;
+                Stack.pop();
+            }
+            
+            Stack.push(i);
+        }
+        while(!Stack.empty()) Stack.pop();
+        for (int i = n - 1; i >= 0; i--) {
+            while(!Stack.empty() && nums[Stack.top()]  <= nums[i]) {
+                prevGreaterOrEqual[Stack.top()] = i;
+                Stack.pop();
+            }
+            
+            Stack.push(i);
+        }
+        LL subMax= 0, subMin = 0;
+        for (int i = 0; i < n; i++) {
+            int a = prevGreaterOrEqual[i], b = nextGreater[i];
+            subMax += (LL) nums[i] * (i - a) * (b - i);
+            int c = prevSmallerOrEqual[i], d = nextSmaller[i];
+            subMin += (LL) nums[i]* (i - c)* (d - i);
+        }
+        return subMax - subMin;
+    }
+};
+
+//1 3 5 2 4 6 8;
+
+        
