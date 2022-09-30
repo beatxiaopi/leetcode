@@ -1,0 +1,65 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <map>
+using namespace std;
+
+bool check(unordered_map<int, vector<int>>&freq, int k) {
+    int temp = 0;
+    for (auto x : freq) {
+        if (x.second[0] > 0 && x.second[1] > 0) {
+            temp++;
+        }
+    }
+    return temp > k;
+}
+
+int main() {
+    // Write C++ code here
+    string s = "adbccdbada";
+    int n = s.size();
+    //vector<int>data = {};
+    int k = 2, res = 0;
+    unordered_map<int, vector<int>>freq;
+    for (auto ch : s) {
+        if (freq.find(ch-'a') == freq.end()) {
+            freq[ch-'a'].push_back(0);
+            freq[ch-'a'].push_back(1);
+        }
+        else freq[ch-'a'][1]++;
+    }
+    
+    for (int i = 0; i < n; i++) {
+        freq[s[i]-'a'][0]++;
+        freq[s[i]-'a'][1]--;
+        if (freq[s[i]-'a'][1] == 0) {
+            freq.erase(s[i]-'a');
+        }
+        res += check(freq, k);
+    }
+    
+   
+    cout<<"res="<<res;
+    
+    return 0;
+}
+//  string: adbcc dbada
+//          12344 23121
+//          01234 56789
+//  a:0,7,9
+//  b:2,6
+//  c:3,4
+//  d:1,5,8
+
+
+
+
