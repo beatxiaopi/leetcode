@@ -1,0 +1,42 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+using namespace std;
+
+
+int main() {
+    // Write C++ code here
+    string password = "cbatabc";
+    vector<int>count(26, 0);
+    string res = "", mid = "";
+    for (auto ch : password) {
+        count[ch-'a']++;
+    }
+    for (int i = 0; i < 26; i++) {
+        if (count[i] == 0) continue;
+        if (count[i] == 1) {
+            mid += ('a' + i);
+            continue;
+        }
+        res.push_back('a' + i);
+    }
+    int n = res.size();
+    res += mid;
+    for (int i = n-1; i >=0; i--) {
+        res.push_back(res[i]);
+    }
+    
+   cout<<"res="<<res<<";";
+    return 0;
+}
