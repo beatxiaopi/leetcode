@@ -17,19 +17,22 @@ using namespace std;
 
 int main() {
     // Write C++ code here
-    string password = "cbatabc";
+    string password = "cbaaatabcbbcc";
     vector<int>count(26, 0);
     string res = "", mid = "";
     for (auto ch : password) {
         count[ch-'a']++;
     }
     for (int i = 0; i < 26; i++) {
-        if (count[i] == 0) continue;
         if (count[i] == 1) {
             mid += ('a' + i);
             continue;
         }
-        res.push_back('a' + i);
+        while (count[i] != 0) {
+            res.push_back('a' + i);
+            count[i] -= 2;
+        }
+        
     }
     int n = res.size();
     res += mid;
