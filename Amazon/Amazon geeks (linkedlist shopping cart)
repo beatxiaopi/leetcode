@@ -1,0 +1,25 @@
+def sol(head, operations):
+    tail = head
+    while tail.next:
+        tail = tail.next
+    for op in operations:
+        common, item = op[0], op[1]
+        if common == 'PUSH_TAIL':
+            nxt = ListNode(item.val)
+            if tail:
+                tail.next = nxt
+                tail = next
+            if not head:
+                head = tail
+        elif common == 'PUSH_HEAD':
+            nxt = ListNode(item.val)
+            nxt.next = head
+            head = nxt
+        elif common == 'POP_HEAD':
+            if head:
+                head = head.next
+            else:
+                head = None
+                tail = None
+    
+    return head
