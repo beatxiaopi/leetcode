@@ -1,0 +1,52 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+using namespace std;
+using LL = long long;
+
+int main() {
+    // Write C++ code here
+    vector<int> data = {1, 3, 4, 2};
+    vector<vector<int>>res;
+    set<int, greater<>>memo;
+    int lastPos = 0;
+    for (int i = 0; i < data.size(); i++) {
+        memo.insert(data[i]);
+        
+        vector<int>curr;
+        auto iter = memo.begin();
+        if (*iter == i+1 && memo.size() == i+1) {
+            while (lastPos <= i) {
+                curr.push_back(*iter);
+                iter++;
+                lastPos++;
+            }
+            reverse(curr.begin(), curr.end());
+            res.push_back(curr);
+        }
+        else {
+            res.push_back(vector<int>(1,-1));
+        }
+        //cout<<*iter;
+    }
+    for (auto v : res) {
+        for (auto x : v) {
+            cout<<x;
+        }
+    }
+    //cout<<"res="<<count<<";";
+
+    return 0;
+}
