@@ -1,0 +1,47 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+using namespace std;
+using LL = long long;
+
+int main() {
+    // Write C++ code here
+    vector<int> data = {1, 3, 4, 2};
+    string s1 = "mononom";
+    string s2 = "mon";
+    unordered_map<int, int>m1;
+    unordered_map<int, int>m2;
+    for (auto ch : s1) {
+        m1[ch-'a']++;
+    }
+    for (auto ch : s2) {
+        m2[ch-'a']++;
+    }
+    int res = INT_MAX/2;
+    for (auto p : m2) {
+        if (m1.find(p.first) == m1.end()) return 0;
+        else {
+            res = min(res, m1[p.first]/p.second);
+        }
+    }
+    cout<<"res="<<res<<";";
+
+    return 0;
+}
+
+
+
+
+
