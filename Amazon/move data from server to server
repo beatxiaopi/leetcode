@@ -1,0 +1,14 @@
+vector<int> movedata(vector<int> data,vector<int> movefrom,vector<int> moveto){
+        vector<int> data = {1,7,6,8};
+        vector<int> movefrom={1,7,2};
+        vector<int> moveto = {2,9,5};
+        set<int> s(data.begin(),data.end());
+        for(int i=0;i<movefrom.size();i++){
+            s.erase(movefrom[i]);
+            s.insert(moveto[i]);
+        }
+        vector<int> res(s.begin(),s.end());
+        for(auto tmp:res)
+            std::cout << tmp << std::endl;
+        return res;
+}
