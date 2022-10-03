@@ -1,0 +1,55 @@
+
+
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int> rating = {4, 3, 5, 4, 3};
+    int n = rating.size();
+    deque<int>dq;
+    int res = 0, temp = 0;
+    for (int i = 0; i < n; i++) {
+        temp = 0;
+        while (!dq.empty() && rating[dq.back()] - 1 != rating[i]) {
+            dq.pop_front();
+            temp++;
+        }
+        
+        dq.push_back(i);
+        if (i == n - 1) {
+            while (!dq.empty()) {
+                dq.pop_front();
+                temp++;
+            }
+        }
+        cout<<"temp="<<temp<<";";
+        res += (1+temp)*temp/2;
+    }
+
+    cout<<"res="<<res<<";";
+
+    return 0;
+}
+// len = 1: 5, 4, 3, 2
+// len = 2: 54, 43, 32
+// len = 3: 543, 432
+// len = 4: 5432
+// 4*(4+1)/2=10
