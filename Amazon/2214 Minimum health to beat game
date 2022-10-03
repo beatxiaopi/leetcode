@@ -1,0 +1,12 @@
+using LL = long long;
+class Solution {
+public:
+    long long minimumHealth(vector<int>& damage, int armor) {
+        LL res = 0;
+        res = accumulate(damage.begin(), damage.end(), 1L);
+        LL maxE = *max_element(damage.begin(), damage.end());
+        if (armor >= maxE) res -= maxE;
+        else res -= armor;
+        return res;
+    }
+};
