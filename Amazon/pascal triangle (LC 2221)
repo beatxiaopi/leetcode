@@ -1,0 +1,13 @@
+int c[1001][1001] = {}, n = 1;
+class Solution {
+public:
+    int triangularSum(vector<int>& nums) {
+        int res = 0, sz = nums.size();
+        for (; n <= sz; ++n) // compute once for all test cases.
+            for (int r = 0; r < n; ++r) 
+                c[n][r] = r == 0 ? 1 : (c[n - 1][r - 1] + c[n - 1][r]) % 10;
+        for (int i = 0; i < sz; ++i)
+            res = (res + nums[i] * c[sz][i]) % 10;
+        return res;
+    }
+};
