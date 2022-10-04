@@ -1,0 +1,39 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int>data = {1,2,7,7,4,3,6};
+    string s1 = "armaze";
+    string s2 = "amazon";
+    int res =0;
+    int n1 = s1.size(), n2 = s2.size(), p1 = 0, p2 = 0;
+    while (p1 < n1 && p2 < n2) {
+        if (s1[p1] == s2[p2]) {
+            p1++;
+            p2++;
+        }
+        else p1++;
+    }
+    res = max(res, n2-p2);
+    
+    cout<<"res="<<res<<";";
+
+    return 0;
+}
