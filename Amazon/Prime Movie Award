@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int>data = {1,5,4,6,8,9,2};
+    int k = 3;
+    int group = 1, n = data.size(), i = 0, j = 0;
+    sort(data.begin(), data.end());
+    while (j < n) {
+        if (data[j] - data[i] > k) {
+            group++;
+            i = j;
+        }
+        j++;
+    }
+    
+    cout<<"group="<<group<<";";
+
+    return 0;
+}
+// 0 1 1 1
+// 1 0 1 1
+// 1 1 0 0
+// 0 1 0 1
