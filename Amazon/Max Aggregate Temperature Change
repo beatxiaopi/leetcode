@@ -1,0 +1,41 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int>nums = {6,-2,5};
+    int n = nums.size();
+    vector<LL>presum(n, 0);
+    presum[0] = nums[0];
+    LL res = 0;
+    for(int i = 1; i < n; i++) {
+        presum[i] = presum[i-1] + nums[i];
+    }
+    for(int i = 0; i < n; i++) {
+        res = max(presum[i], presum[n-1]-presum[i]+ nums[i]);
+    }
+    
+    cout<<"res="<<res<<";";
+
+    return 0;
+}
+// 0 1 1 1
+// 1 0 1 1
+// 1 1 0 0
+// 0 1 0 1
