@@ -1,0 +1,51 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+bool checkOK(string &s1, string &s2, int p1, int p) {
+    int k = 0;
+    string s3 = "";
+    while (p1 < s1.size() && k < s2.size()) {
+        s3.push_back(s1[p1]);
+        k++;
+        p1 += p;
+    }
+    sort(s3.begin(), s3.end());
+    sort(s2.begin(), s2.end());
+    return s2 == s3;
+}
+
+int main() {
+    // Write C++ code here
+    vector<int>nums = {};
+    string s1 = "acaccaa";
+    string s2 = "aac";
+    int p = 2;
+    
+    int n = s1.size(), m = s2.size(), res = 0;
+    
+    
+    for (int i = 0; i < n - (m-1)*p; i++) {
+        if (checkOK(s1, s2, i, p)) res += 1;
+    }
+    
+    cout<<"res="<<res;
+
+    return 0;
+}
+// 10, 4, 8, 13, 20 m=2
+
+
