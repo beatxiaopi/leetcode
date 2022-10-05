@@ -1,0 +1,44 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int>nums = {10, 4, 8, 13, 20};
+    int n = nums.size();
+    int k = 2;
+    deque<int>dq;
+    int res = 0, curr = 0;
+    for (int i = 0; i < nums.size(); i++) {
+        dq.push_back(nums[i]);
+        curr += nums[i];
+        if (dq.size() == k) {
+            res = max(res,curr);
+            curr -= dq.front();
+            dq.pop_front();
+        }
+        
+    }
+    res = accumulate(nums.begin(), nums.end(), 0) - res;
+    cout<<"res="<<res<<";";
+
+    return 0;
+}
+// 10, 4, 8, 13, 20 m=2
+
+
