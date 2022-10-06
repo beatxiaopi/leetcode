@@ -1,0 +1,40 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<vector<string>>entries = {{{"INSERT","milk","4"}, {"INSERT","coffee","3"},{"VIEW","-","-"},{"INSERT","pizza","5"},{"INSERT","apple","3"},{"INSERT","gum","1"},{"VIEW","-","-"}}};
+    vector<pair<string, string>>res;
+    int k = 0;
+    for (auto x : entries) {
+        if (x[0] == "INSERT") {
+            res.push_back({x[2], x[1]});
+        }
+        else {
+            sort(res.begin(), res.end());
+            cout<<res[k].second;
+            k++;
+        }
+    }
+
+    return 0;
+}
+// 
+
+
