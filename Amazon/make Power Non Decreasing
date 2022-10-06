@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<int>nums = {3,4,1,6,2};
+    int n = nums.size();
+    int sum = 0;
+    for (int i = 0; i < n-1; i++) {
+        if (nums[i+1] < nums[i]) {
+            sum += nums[i] - nums[i+1];
+        }
+    }
+    cout<<"sum="<<sum;
+
+    return 0;
+}
+// 
+
+
