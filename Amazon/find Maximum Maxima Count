@@ -1,0 +1,80 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    string s = "bccaaacb";
+    int n = s.size();
+    vector<int>countLetter(26, 0);
+    vector<int>countFreq(26, 0);
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+        countFreq[s[i]-'a']++;
+        int letter = max_element(countFreq.begin(), countFreq.end()) - countFreq.begin();
+        countLetter[letter]++;
+        for (int i = 0; i < 26; i++) {
+            if (countFreq[i] == countFreq[letter] && i != letter) countLetter[i]++;
+        }
+    }
+    res = *max_element(countLetter.begin(), countLetter.end());
+    cout<<"res="<<res;
+
+    return 0;
+}
+
+//**** 
+//****
+//****
+//****
+//****
+
+method 2:
+
+int maxMaximaCount(string s)
+{
+    priority_queue<pair<int, char>> pq; // To get the character with the maximum
+frequency at any time
+    map<char, int> mp; // A map that will store the frequency of each character
+    map<int, set<char>> freq; // A map to store all the characters that have a
+same frequency. Used a set because searching and deleting in set will be faster
+    map<char, int> maxima; // A map that will store the maxima of a character
+    for (auto &x : s)
+    {
+        if (mp[x] > 0)
+        {
+            auto &cur = freq[mp[x]];
+            cur.erase(cur.find(x)); // erasing the character from the old
+frequency
+}
+        mp[x]++; // increasing the frequency of the current character and then
+adding it to the frequency map and priority queue
+        freq[mp[x]].insert(x);
+        pq.push({mp[x], x});
+        int val = pq.top().first; // getting the element with the maximum
+frequency at the current position.
+        for (auto &y : freq[val]) // next updated the maxima of all the elements
+that have the highest frequency
+            maxima[y]++;
+    }
+    int ans = 0;
+    for (auto &x : maxima)
+        ans = max(ans, x.second); // finding the max maxima
+    return ans;
+}
+
