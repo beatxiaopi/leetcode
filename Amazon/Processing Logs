@@ -1,0 +1,64 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <cmath>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <climits>
+#include <numeric>
+using namespace std;
+using LL = long long;
+
+
+int main() {
+    // Write C++ code here
+    vector<string>logs = {"345366 89921 45",
+"029323 38239 23",
+"38239 345366 15",
+"029323 38239 77",
+"345366 38239 23",
+"029323 345366 13",
+"38239 38239 23"};
+    unordered_map<int,int>freq;
+    int thres = 3;
+    vector<string>res;
+    for (auto s : logs) {
+        string s1 ="", s2 ="";
+        int i = 0;
+        while (s[i] != ' ') {
+            s1.push_back(s[i]);
+            i++;
+        }
+        i++;
+        while (s[i] != ' ') {
+            s2.push_back(s[i]);
+            i++;
+        }
+        if (stoi(s1) == stoi(s2)) {
+            freq[stoi(s1)]++;
+        }
+        else {
+            freq[stoi(s1)]++;
+            freq[stoi(s2)]++;
+        }
+    }
+    
+    for (auto p : freq) {
+        if (p.second >= thres) res.push_back(to_string(p.first));
+    }
+    
+    for (auto x : res)
+        cout<<"res="<<x;
+
+    return 0;
+}
+// 
+
+
