@@ -1,0 +1,16 @@
+public int maxPackage(int[] packageWeights) {
+    Deque<Integer> finalPack = new ArrayDeque<>();
+    finalPack.offerFirst(packageWeights[packageWeights.length - 1]);
+    int max = finalPack.peekFirst();
+
+    for (int i = packageWeights.length - 2; i >= 0; i--) {
+        if (packageWeights[i] < finalPack.peekFirst()) { // merge with package on the right
+            finalPack.offerFirst(finalPack.pollFirst() + packageWeights[i]);
+        } else { // cannot merge with package on the right
+            finalPack.offerFirst(packageWeights[i]);
+        }
+        max = Math.max(max, finalPack.peekFirst());
+    }
+
+    return max;
+}
