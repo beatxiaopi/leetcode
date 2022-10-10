@@ -51,3 +51,36 @@ public:
         fetch(node->right, k-1);
     }
 };
+
+Method 2:
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        dfs1(root);   //建边
+        dfs2(target, k);  //遍历k范围以内的节点
+        return ans;
+    }
+private:
+    vector<int> ans;   //存储答案
+    unordered_map<TreeNode*, TreeNode*> myHash;  //存储每个节点的父亲节点
+    unordered_set<TreeNode*> mySet;   //在遍历k范围内的节点时要确定这个节点是否已经来过
+    void dfs1(TreeNode* root){  //建边
+        if(root == NULL)      //空节点直接返回
+            return;
+        myHash[root->left] = root;   //它的左右节点的父节点都是它
+        myHash[root->right] = root;
+        dfs1(root->left);   //搜索它的左右节点
+        dfs1(root->right);
+    }
+    void dfs2(TreeNode* target, int k){    //遍历搜索
+        if(target == NULL || mySet.find(target) != mySet.end())  //如果为空或者之前来过
+            return;
+        mySet.insert(target);  //记录下已经来过
+        if(k-- == 0){   //如果k已经是0，即已经达到目标距离
+            ans.push_back(target->val);  //加入答案
+            return;
+        }
+        dfs2(target->left, k);   //继续搜索左右节点和父亲节点
+        dfs2(target->right, k);
+        dfs2(myHash[target], k);
+    }
+};
