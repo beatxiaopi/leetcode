@@ -1,0 +1,49 @@
+class SORTracker {
+    // using LL = long long;
+    // set<LL>db;
+    // LL counter = 0;
+    
+public:
+    set<pair<int, string>>db;
+    std::set<pair<int, string>>::iterator iter0 = end(db);
+    SORTracker() {
+        
+    }
+    
+    void add(string name, int score) {
+        
+        auto iter1 = db.insert({-score, name}).first;
+        if (iter0 == end(db) || *iter0 > *iter1) {
+            iter0--;
+        }
+        // LL curr = 0;
+        // curr |= ((LL) score<<50);
+        // for (LL i = 0; i < name.size(); i++) {
+        //     curr |= (LL) (name[i]- 'a' + 1) << (45-5*i);
+        // }
+        // db.insert(curr);
+        
+    }
+    
+    string get() {
+        return (iter0++)->second;
+//         LL curr = *std::next(db.begin(), counter);
+//         counter++;
+//         string res = "";
+//         for (LL i = 0; i < 9; i++) {
+//             LL temp = (LL) curr>>(45 - (9-i)*5);
+//             if (temp != 0) res += (temp +'a' -1);
+//             curr ^= (LL) temp <<(45 - (9-i)*5);
+            
+//             cout<<temp<<":";
+//         }
+//         return res;
+    }
+};
+
+/**
+ * Your SORTracker object will be instantiated and called as such:
+ * SORTracker* obj = new SORTracker();
+ * obj->add(name,score);
+ * string param_2 = obj->get();
+ */
