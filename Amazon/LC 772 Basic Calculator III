@@ -1,0 +1,64 @@
+class Solution {
+public:
+    int calculate(string s) {
+        string curStr = "";
+        stack<string>stk;
+        for (int i = 0; i < s.size(); i++) {
+            if (s[i] == '(') {
+                stk.push(curStr);
+                curStr = "";
+            }
+            else if (s[i] == ')') {
+                int temp = helper(curStr);
+                
+                curStr = stk.top() + to_string(temp);
+                stk.pop();
+            }
+            else curStr += s[i];
+        }
+        return helper(curStr);
+    }
+    
+        int helper(string t) {
+        string temp = "+";
+        for (auto ch : t) {
+            if (ch !=' ') temp.push_back(ch);
+        }
+        t = temp;
+        vector<long>nums;
+        for (int i = 0; i < t.size(); i++) {
+            if (t[i] == '+' || t[i] == '-') {
+                int j = i + 1;
+                if (t[j] == '+' || t[j] == '-') j++;
+                while (j < t.size() && isdigit(t[j])) {
+                    j++;
+                }
+                long curr = stol(t.substr(i+1, j - i - 1));
+                if (t[i] == '+') nums.push_back(curr);
+                else if (t[i] == '-') nums.push_back(-curr);
+                i = j - 1;
+            }  
+            
+            else if (t[i] == '*' || t[i] == '/') {
+                int j = i + 1;
+                if (t[j] == '+' || t[j] == '-') j++;
+                while (j < t.size() && isdigit(t[j])) {
+                    j++;
+                }
+                long curr = stol(t.substr(i+1, j - i - 1));
+                if (t[i] == '*') nums.back() *= curr;
+                else if (t[i] == '/') nums.back() /= curr;
+                i = j - 1;
+            }
+        }
+        int res = 0;
+        for (auto x : nums) {
+            res += x;
+        }
+        return res;
+    }
+};
+//2*(5+5*2)/3+(6/2+8);
+//2--201+
+//0123456;
+    // i   j
