@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        unordered_map<char,int>freq;
+        for (auto ch : s) {
+            freq[ch]++;
+        }
+        priority_queue<pair<int,char>, vector<pair<int,char>>>pq;
+        for (auto p : freq) {
+            if(p.second > (s.size() + 1)/2 ) return "";
+            pq.push({p.second, p.first});
+        }
+        
+        string res ="";
+        
+        while (pq.size() > 1) {
+            auto [cnt1, ch1] = pq.top();
+            pq.pop();
+            auto [cnt2, ch2] = pq.top();
+            pq.pop();
+            res.push_back(ch1);
+            res.push_back(ch2);
+            cnt1--;
+            cnt2--;
+            if (cnt1 > 0) pq.push({cnt1, ch1});
+            if (cnt2 > 0) pq.push({cnt2, ch2});
+        }
+
+        
+        while (!pq.empty()) {
+            auto [cnt, ch] = pq.top();
+            pq.pop();
+            res.push_back(ch);
+        }
+        return res;
+    }
+};
+
+//aaaaabbccde
+// a: 5
+// b: 2
+// c: 2
+// d: 1
+// e: 1
+    
+// a b 
+// a b
+// a c
+// a c
+// a d
