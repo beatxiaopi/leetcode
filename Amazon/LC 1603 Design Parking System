@@ -1,0 +1,23 @@
+class ParkingSystem {
+public:
+    unordered_map<int, int>count;
+    ParkingSystem(int big, int medium, int small) {
+        count[1] = big;
+        count[2] = medium;
+        count[3] = small;
+    }
+    
+    bool addCar(int carType) {
+        if (count[carType] > 0) {
+            count[carType]--;
+            return true;
+        }
+        else return false;
+    }
+};
+
+/**
+ * Your ParkingSystem object will be instantiated and called as such:
+ * ParkingSystem* obj = new ParkingSystem(big, medium, small);
+ * bool param_1 = obj->addCar(carType);
+ */
