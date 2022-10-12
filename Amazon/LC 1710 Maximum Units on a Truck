@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+        vector<pair<int, int>>fit;
+        for (auto x : boxTypes) {
+            fit.push_back({x[1], x[0]});
+        }
+        sort(fit.begin(), fit.end());
+        reverse(fit.begin(), fit.end());
+        int res = 0;
+        for (int i = 0; i < fit.size(); i++) {
+            if (truckSize >= fit[i].second) {
+                res += fit[i].second*fit[i].first;
+                truckSize -= fit[i].second;
+            }
+            else {
+                res += fit[i].first * truckSize;
+                break;
+            }
+        }
+        return res;
+    }
+};
