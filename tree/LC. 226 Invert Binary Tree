@@ -1,0 +1,52 @@
+//Method 1:
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (root == NULL) return root;
+        swap(root->left, root->right);
+        invertTree(root->left);
+        invertTree(root->right);
+        return root;
+    }
+};
+
+//method 2:
+
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (root == NULL) return root;
+        stack<TreeNode*> stk;
+        stk.push(root);
+        while (!stk.empty()) {
+            TreeNode* node = stk.top();
+            stk.pop();
+            swap(node->left, node->right);
+            if (node->left) stk.push(node->left);
+            if (node->right) stk.push(node->right);
+        }
+        return root;
+    }
+};
+
+//method 3:
+
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (root == NULL) return root;
+        queue<TreeNode*>q;
+        q.push(root);
+        while (!q.empty()) {
+            int n = q.size();
+            while (n--) {
+                TreeNode* curr = q.front();
+                q.pop();
+                swap(curr->left, curr->right);
+                if (curr->left) q.push(curr->left);
+                if (curr->right) q.push(curr->right);
+            }
+        }
+        return root;
+    }
+};
