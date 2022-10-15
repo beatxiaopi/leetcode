@@ -25,3 +25,28 @@ public:
         return symmetric(a->left, b->right) && symmetric(a->right, b->left);
     }
 };
+
+//method 2: (iterative)
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if (root == NULL) return true;
+        queue<TreeNode*>q;
+        q.push(root);
+        q.push(root);
+        while (!q.empty()) {
+            auto p1 = q.front();
+            q.pop();
+            auto p2 = q.front();
+            q.pop();
+            if (p1 == NULL && p2 == NULL) continue;
+            if (p1 == NULL || p2 == NULL || p1->val != p2->val) return false;
+            q.push(p1->left);
+            q.push(p2->right);
+            q.push(p1->right);
+            q.push(p2->left);
+        }
+        return true;
+    }
+};
