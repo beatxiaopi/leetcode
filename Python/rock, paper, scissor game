@@ -1,0 +1,66 @@
+import random
+import argparse
+from functools import reduce
+
+def get_choices():
+    player_choice = input("Please choose from the three inputs:rock, scissor, or paper:")
+    option = ["rock", "scissor","paper"]
+    computer_choice = random.choice(option)
+    choices = {"player":player_choice, "computer":computer_choice}
+    return choices
+    
+def check_win(player, computer):
+    if player == computer:
+        return "It is a tie."
+    elif player == "rock":
+        if computer == "scissor":
+            return "rock breaks scissor: you win"
+        else: return "paper covers rock: you lose"
+    elif player == "scissor":
+        if computer == "rock":
+            return "rock breaks scissor: you lose"
+        else: return "scissor cuts paper: you win"
+    elif player == "paper":
+        if computer == "scissor":
+            return "scissor cuts paper: you lose"
+        else: return "paper covers rock: you win"
+    
+choices = get_choices()
+result = check_win(choices["player"], choices["computer"])
+print(result)
+
+expense = (200,300,550)
+nums = [1,2,3,4]
+# b = a
+# print(b)
+
+# # dic = {"name":"Roger", "age":"8", "color":"yellow"}
+# # for index, item in enumerate(dic):
+# #     print(index, item)
+
+# class Dog:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
+        
+#     def bark(self):
+#         print("woof")
+
+# a = Dog("Roger", 8)
+# print(a.name, a.age)
+# a.bark()
+
+# multiply = lambda a, b : a*b
+# print(multiply(2, 3))
+
+# print(reduce(lambda a, b: a + b, expense))
+
+# def factorial(n):
+#     if n == 1: return 1
+#     return n*factorial(n-1)
+# print(factorial(3))
+
+new_nums = [n**2 for n in nums]
+print(new_nums)
+
+
