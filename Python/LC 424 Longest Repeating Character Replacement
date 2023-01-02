@@ -1,0 +1,15 @@
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        #abbc k = 1
+        l, res = 0, 0
+        maxf = 0
+        freq_map = {}
+        for r in range(len(s)):
+            freq_map[s[r]] = 1 + freq_map.get(s[r], 0)
+            
+            maxf = max(maxf, max(freq_map.values()))
+            if maxf + k < r-l+1:
+                 freq_map[s[l]] = freq_map.get(s[l]) - 1
+                 l += 1
+            res = r-l+1
+        return res
